@@ -6,5 +6,5 @@ ENV["RAILS_ENV"] ||= ENV["RACK_ENV"]
 require "bundler/setup"
 require "ude"
 
-cli = Ude::CLI
+cli = UDE::CLI
 Dry::CLI.new(cli).call
