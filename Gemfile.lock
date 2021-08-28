@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ude (0.1.0)
+    ude (0.1.2)
       dry-cli
       tty-command
       zeitwerk
