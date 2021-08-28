@@ -9,5 +9,6 @@ module UDE
     extend Dry::CLI::Registry
 
     register "version", Version, aliases: ["v", "-v", "--version", "info"]
+    register "build", Build, aliases: ["b"]
   end
 end
