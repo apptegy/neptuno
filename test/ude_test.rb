@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/reporters"
 
-class UDETest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil UDE::VERSION
-  end
+Minitest::Reporters.use!
 
-  def test_that_it_has_command
-    refute_nil UDE::CLI
+describe "UDE" do
+  it "has a version number" do
+    value(UDE::VERSION).wont_be_nil
   end
 end

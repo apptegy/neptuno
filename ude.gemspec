@@ -34,5 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-command"
   spec.add_dependency "zeitwerk"
 
+  spec.add_development_dependency "minitest-reporters"
   spec.add_development_dependency "standard"
 end
