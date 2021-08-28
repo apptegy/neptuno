@@ -4,7 +4,7 @@ require_relative "lib/ude/version"
 
 Gem::Specification.new do |spec|
   spec.name = "ude"
-  spec.version = Ude::VERSION
+  spec.version = UDE::VERSION
   spec.authors = ["Roberto Plancarte"]
   spec.email = ["roberto.plancarte@apptegy.com"]
 
@@ -29,8 +29,9 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Ude dependency list
+  # UDE dependency list
   spec.add_dependency "dry-cli"
+  spec.add_dependency "tty-command"
   spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "standard"
