@@ -32,6 +32,10 @@ Gem::Specification.new do |spec|
   # UDE dependency list
   spec.add_dependency "dry-cli"
   spec.add_dependency "tty-command"
+  spec.add_dependency "tty-config"
+  spec.add_dependency "tty-file"
+  spec.add_dependency "tty-prompt"
+  spec.add_dependency "tty-which"
   spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "minitest-reporters"

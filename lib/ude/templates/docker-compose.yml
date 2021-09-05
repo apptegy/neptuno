@@ -1,0 +1,7 @@
+version: '3'
+services:
+  alpine:
+    image: alpine
+    tty: true
+    stdin_open: true
+    command: ash
