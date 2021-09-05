@@ -10,10 +10,10 @@ module UDE
       include TTY::Config
       include TTY::Which
 
-      desc 'Installs .ude, docker, tmux, tmuxinator and overmind'
+      desc "Installs .ude, docker, tmux, tmuxinator and overmind"
 
-      WORK_TREE = { '.' => ['docker-compose.yml',
-                            { 'services' => [], 'dockerfiles' => [], 'procfiles' => [] }] }.freeze
+      WORK_TREE = {"." => ["docker-compose.yml", ".tmuxinator.yml",
+        {"services" => [], "dockerfiles" => [], "procfiles" => []}]}.freeze
 
       CONFIG = nil
 
@@ -23,12 +23,12 @@ module UDE
       end
 
       def dependencies_installed?
-        which('git')
+        which("git")
       end
 
       def create_dirs
         file.create_dir(WORK_TREE, Dir.pwd)
-        config.set(:current_service, value: '')
+        config.set(:current_service, value: "")
         config.set(:services, value: [])
         config.write(create: true, force: true)
       end

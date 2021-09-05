@@ -4,7 +4,7 @@ module UDE
   module Docker
     module Services
       include UDE::TTY::Config
-      require 'yaml'
+      require "yaml"
 
       def running_services
         running_services = `cd ~/.ude/projects/#{current_project} && docker compose ps | awk '{ print $3 }' | awk 'NR>1'`
@@ -13,7 +13,7 @@ module UDE
 
       def registered_services
         dc = YAML.load_file("#{ude_path}/docker-compose.yml")
-        dc['services'].keys
+        dc["services"].keys
       end
 
       def stopped_services

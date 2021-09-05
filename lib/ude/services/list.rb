@@ -4,9 +4,10 @@ module UDE
   module Services
     # Add project to ude
     class List < UDE::CLI::Base
-      desc 'List UDE projects'
+      desc "List UDE projects"
 
-      def call(**); end
+      def call(**)
+      end
     end
   end
 end

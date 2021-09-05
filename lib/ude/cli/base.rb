@@ -4,29 +4,28 @@ module UDE
   module CLI
     # Build docker container for UDE project
     class Base < Dry::CLI::Command
-      # define path helpers
+      ABORT_MESSAGE = "fatal: not a UDE repository (or any of the parent directories): .ude"
+      include UDE::TTY::Config
+      include TTY::Prompt
+      include TTY::File
+      include UDE::TTY::Command
 
-      def project
-        ude_path.split('/').last
+      def command_service_to(request)
+        if in_service?
+          yield service, project
+        else
+          chosen_service = prompt.select("Command service to #{request}:", services)
+          yield chosen_service, project
+        end
       end
 
-      def in_service?
-        Dir.pwd.include?("#{ude_path}/services/")
-      end
-
-      def service
-        Dir.pwd.match(%r{services/([^/]*)})&.captures&.first
-      end
-
-      def ude_path
-        return @base_path if @base_path
-
-        pwd = Dir.pwd
-        loop do
-          return @base_path = pwd if Dir.children(pwd).include?('ude.yml')
-
-          pwd = pwd.split('/')[0..-2].join('/')
-          abort ABORT_MESSAGE if pwd == ''
+      def command_services_to(request)
+        if in_service?
+          yield [service]
+        else
+          chosen_services = configured_services.empty? ? nil : configured_services
+          chosen_services ||= prompt.multi_select("Command services to #{request}:", services)
+          yield chosen_services
         end
       end
     end

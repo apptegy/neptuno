@@ -4,10 +4,12 @@ module UDE
   module Docker
     # Build docker container for UDE project
     class Build < UDE::CLI::Base
-      desc 'build docker containers for project'
+      desc "Docker: Build docker containers for project"
 
       def call(**)
-        system('docker compose build')
+        command_services_to("build") do |services|
+          system("docker compose build #{services.join(" ")} --parallel")
+        end
       end
     end
   end

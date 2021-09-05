@@ -4,10 +4,14 @@ module UDE
   module Overmind
     # Build docker container for UDE project
     class Stop < UDE::CLI::Base
-      desc 'start processes inside docker containers'
+      desc "Overmind: Stop processes inside docker containers"
 
       def call(**)
-        system("cd #{ude_path} && docker compose exec #{service} kill -9 -1")
+        command_services_to("stop procs") do |services|
+          services.each do |service|
+            system("cd #{ude_path} && docker compose exec #{service} kill -9 -1")
+          end
+        end
       end
     end
   end
