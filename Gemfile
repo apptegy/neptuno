@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 # Specify your gem's dependencies in ude.gemspec
 gemspec
 
-gem 'rake'
+gem "rake"
 
-gem 'minitest'
+gem "minitest"
 
-gem 'rubocop', require: false
+gem "rubocop", require: false
