@@ -7,9 +7,9 @@ module UDE
       desc "Docker: bring up docker containers for current project"
 
       def call(**)
-        command_services_to("come up") { |services|
+        command_services_to("come up") do |services|
           system("cd #{ude_path} && docker compose up -d #{services.join(" ")}")
-        }
+        end
       end
     end
   end

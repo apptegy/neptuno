@@ -8,12 +8,12 @@ module UDE
       include TTY::Config
       include TTY::File
 
-      desc 'Add a UDE service with Git'
+      desc "Add a UDE service with Git"
 
       def call(**)
-        name = prompt.ask('? Service name:')
+        name = prompt.ask("? Service name:")
         add_name_to_config(name)
-        repo = prompt.ask('? Git repo:')
+        repo = prompt.ask("? Git repo:")
         clone_into_folder(repo, name)
         add_dockerfile(name)
         add_procfile(name)
