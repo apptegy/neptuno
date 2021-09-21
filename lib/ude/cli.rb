@@ -10,7 +10,8 @@ module UDE
 
     register "version", Version, aliases: ["v", "-v", "--version", "info"]
     register "init", Install
-    register "config", Configure, aliases: ["configure", "conf", "cc"]
+    register "ls", List, aliases: ["ps"]
+    register "config", Configure, aliases: %w[configure conf cc]
     register "build", ::UDE::Docker::Build, aliases: ["b"]
     register "up", Docker::Up, aliases: ["u"]
     register "down", Docker::Down, aliases: ["d"]

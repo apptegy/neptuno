@@ -28,7 +28,7 @@ module UDE
 
       def create_dirs
         file.create_dir(WORK_TREE, Dir.pwd)
-        config.set(:current_service, value: "")
+        config.set(:configured_services, value: "")
         config.set(:services, value: [])
         config.write(create: true, force: true)
       end
