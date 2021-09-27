@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" alt="Neptuno Logo" src="https://raw.githubusercontent.com/robertoplancarte/neptuno/master/docs/logo_shadow.svg">
+  <img width="200" alt="Neptuno Logo" src="docs/logo_shadow.svg">
 </p>
 
 
