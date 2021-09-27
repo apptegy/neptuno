@@ -2,8 +2,8 @@
 
 require "test_helper"
 
-describe UDE::CLI do
+describe Neptuno::CLI do
   it "has exists" do
-    value(UDE::CLI).wont_be_nil
+    value(Neptuno::CLI).wont_be_nil
   end
 end

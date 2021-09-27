@@ -1,0 +1,22 @@
+body {
+  background-image: url("bg.png");
+  background-repeat: repeat;
+}
+
+body:before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 0; bottom: 0;
+}
+
+span#logo {
+  font-family: 'Audiowide', cursive;
+}
+h1#logo {
+  font-family: 'Audiowide', cursive;
+  text-shadow: 2px 2px 4px black, 1px 1px 0 black;
+}
+.logo{
+  font-family: 'Audiowide', cursive;
+}

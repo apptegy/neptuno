@@ -2,8 +2,8 @@
 
 require "test_helper"
 
-describe UDE do
+describe Neptuno do
   it "has a version number" do
-    value(UDE::VERSION).wont_be_nil
+    value(Neptuno::VERSION).wont_be_nil
   end
 end

@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in ude.gemspec
+# Specify your gem's dependencies in neptuno.gemspec
 gemspec
 
 gem "rake"
