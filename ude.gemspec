@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require_relative "lib/ude/version"
+require_relative "lib/neptuno/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "ude"
-  spec.version = UDE::VERSION
+  spec.name = "neptuno"
+  spec.version = Neptuno::VERSION
   spec.authors = ["Roberto Plancarte"]
   spec.email = ["roberto.plancarte@apptegy.com"]
 
   spec.summary = "Unified Development Environment CLI"
-  spec.description = "A CLI for Roberto Plancarte's UDE architectural style"
-  spec.homepage = "https://github.com/robertoplancarte/ude.git"
+  spec.description = "A CLI for Roberto Plancarte's Neptuno architectural style"
+  spec.homepage = "https://github.com/robertoplancarte/neptuno.git"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.2"
+  spec.required_ruby_version = ">= 2.0.0"
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
@@ -29,13 +29,14 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # UDE dependency list
+  # Neptuno dependency list
   spec.add_dependency "dry-cli"
   spec.add_dependency "tty-command"
   spec.add_dependency "tty-config"
   spec.add_dependency "tty-file"
   spec.add_dependency "tty-prompt"
   spec.add_dependency "tty-which"
+  spec.add_dependency "tty-spinner"
   spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "minitest-reporters"

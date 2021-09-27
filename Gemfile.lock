@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    ude (0.1.4)
+    neptuno (0.1.4)
       dry-cli
       tty-command
       tty-config
       tty-file
       tty-prompt
+      tty-spinner
       tty-which
       zeitwerk
 
@@ -68,12 +69,15 @@ GEM
       tty-screen (~> 0.8)
       wisper (~> 2.0)
     tty-screen (0.8.1)
+    tty-spinner (0.9.3)
+      tty-cursor (~> 0.7)
     tty-which (0.5.0)
     unicode-display_width (2.0.0)
     wisper (2.0.1)
     zeitwerk (2.4.2)
 
 PLATFORMS
+  ruby
   x86_64-darwin-20
   x86_64-linux
 
@@ -83,7 +87,7 @@ DEPENDENCIES
   rake
   rubocop
   standard
-  ude!
+  neptuno!
 
 BUNDLED WITH
    2.2.22

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="docs.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+      <!-- This example requires Tailwind CSS v2.0+ -->
+      <nav>
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div class="relative flex items-center justify-between h-16">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <!-- Mobile menu button-->
+              <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+            <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex-shrink-0 items-center hidden md:flex">
+                <img class="lg:block h-9 w-auto" src="./logo.svg" alt="Neptuno">
+                <span id="logo" class="text-white py-2 text-sm font-thin text-blue-300">Neptuno</span>
+              </div>
+              <div class="hidden sm:block sm:ml-6">
+                <div class="flex space-x-4">
+                  <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Home</a>
+                  <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                </div>
+              </div>
+            </div>
+            <div class="flex">
+              <button type="button" class="bg-gray-800 rounded-full mr-2">
+                <span class="sr-only">Ruby Gems</span>
+                <img class="h-6 w-8" src="./rg.svg" alt="Ruby Gems">
+              </button>
+
+              <button type="button" class="bg-gray-800 flex text-sm rounded-full">
+                <span class="sr-only">Open user menu</span>
+                <img class="h-8 w-8" src="./gh.png" alt="Github">
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="sm:hidden" id="mobile-menu">
+          <div class="px-2 pt-2 pb-3 space-y-1"> </div>
+        </div>
+      </nav>
+
+      
+    <main class="sm:mt-24">
+      <div class="mx-auto max-w-7xl">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+          <div class="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center">
+            <div>
+              <h1 class="mb-10 sm:mb-0 text-center lg:text-left text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:leading-none lg:mt-6 lg:text-5xl xl:text-5xl">
+                <div class="flex items-center justify-center lg:justify-start">
+                  <img class="lg:block h-20 w-auto" src="./logo.svg" alt="Neptuno">
+                  <span class="md:block text-blue-300 logo font-thin"> Neptuno </span>
+                </div>
+                <span class="md:block">environment as code</span>
+              </h1>
+              <p class="mt-3 text-base text-white sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                Neptuno is an "environment as code" framework; which aims to be opinionated enough to get you going fast, and customizable enough to run just the way you work.
+              </p>
+            </div>
+          </div>
+          <div class="hidden lg:block mt-16 sm:mt-24 lg:mt-0 lg:col-span-6">
+            <img class="object-contain" src="./splash.png" />
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

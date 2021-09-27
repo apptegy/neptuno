@@ -1,15 +1,18 @@
-# UDE
+<p align="center">
+  <img width="200" alt="Neptuno Logo" src="https://raw.githubusercontent.com/robertoplancarte/neptuno/master/docs/logo_shadow.svg">
+</p>
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ude`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO: Delete this and the text above, and describe your gem
+# Neptuno
+
+Neptuno is an "environment as code" framework; which aims to be opinionated enough to get you going fast, and customizable enough to run just the way you work.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ude'
+gem 'neptuno'
 ```
 
 And then execute:
@@ -18,11 +21,13 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install ude
+    $ gem install neptuno
 
 ## Usage
 
-TODO: Write usage instructions here
+Once installed you can run neptuno by its executable to see the options available.
+
+    $ bundle neptuno
 
 ## Development
 
@@ -32,7 +37,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/ude. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/ude/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/robertoplancarte/neptuno. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/neptuno/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -40,4 +45,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the UDE project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/ude/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Neptuno project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/neptuno/blob/master/CODE_OF_CONDUCT.md).
