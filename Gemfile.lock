@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (0.1.5)
+    neptuno (0.1.8)
       dry-cli
       tty-command
       tty-config
@@ -78,6 +78,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   minitest
