@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (0.1.4)
+    neptuno (0.1.5)
       dry-cli
       tty-command
       tty-config
@@ -25,7 +25,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    parallel (1.20.1)
+    parallel (1.21.0)
     parser (3.0.2.0)
       ast (~> 2.4.1)
     pastel (0.8.0)
@@ -72,22 +72,20 @@ GEM
     tty-spinner (0.9.3)
       tty-cursor (~> 0.7)
     tty-which (0.5.0)
-    unicode-display_width (2.0.0)
+    unicode-display_width (2.1.0)
     wisper (2.0.1)
     zeitwerk (2.4.2)
 
 PLATFORMS
-  ruby
   x86_64-darwin-20
-  x86_64-linux
 
 DEPENDENCIES
   minitest
   minitest-reporters
+  neptuno!
   rake
   rubocop
   standard
-  neptuno!
 
 BUNDLED WITH
    2.2.22
