@@ -6,11 +6,11 @@ module Neptuno
     class Update < Neptuno::CLI::Base
       desc "Environment: Update all environment files"
 
-      def call()
+      def call
         env_path = "#{neptuno_path}/environments/"
         services.each do |service|
           service_env_path = env_path + service
-          if File.exist?("#{service_env_path}/key") &&  File.exist?("#{service_env_path}/secrets.gpg")  
+          if File.exist?("#{service_env_path}/key") && File.exist?("#{service_env_path}/secrets.gpg")
             system("cd #{service_env_path} && gpg --pinentry-mode loopback --passphrase-file key secrets.gpg")
             system("cd #{service_env_path} && cat default secrets > local_env")
             system("cd #{service_env_path} && rm secrets")
@@ -22,4 +22,3 @@ module Neptuno
     end
   end
 end
-

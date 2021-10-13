@@ -27,7 +27,7 @@ module Neptuno
 
             services.sort.each do |service|
               next if service == ""
-              service_ps = ps.find { |s| s.include?("#{project}") && s.include?(" #{service} ") }
+              service_ps = ps.find { |s| s.include?(project.to_s) && s.include?(" #{service} ") }
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
               status = :unhealthy if service_ps.to_s.include?("(unhealthy")
@@ -56,7 +56,7 @@ module Neptuno
             sleep(10)
           end
           neptuno_procs, docker_procs = Neptuno::CLI::List.new.running_services
-          running_services = neptuno_procs.select{|k,v| v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
+          running_services = neptuno_procs.select { |k, v| v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
           spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
           spinner.auto_spin
           sleep(5) if options.fetch(:start)
@@ -64,7 +64,7 @@ module Neptuno
           if services.count == 1
             system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
           else
-            system("cd #{neptuno_path} && tmuxinator start neptuno #{running_services}") 
+            system("cd #{neptuno_path} && tmuxinator start neptuno #{running_services}")
           end
         end
       end
