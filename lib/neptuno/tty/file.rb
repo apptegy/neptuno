@@ -5,7 +5,7 @@ module Neptuno
     # Wrapper class for TTY gem
     module File
       TTY = ::TTY::File
-      ABORT_MESSAGE = "fatal: not a UDE repository (or any of the parent directories): .ude"
+      ABORT_MESSAGE = "fatal: not a Neptuno repository (or any of the parent directories)"
 
       def file
         TTY

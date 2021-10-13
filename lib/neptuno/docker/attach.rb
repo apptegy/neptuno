@@ -7,8 +7,8 @@ module Neptuno
 
       def call(**)
         command_service_to("attach") do |service, project|
-          system("docker compose up #{service} -d")
-          system("docker attach #{project}_#{service}_1")
+          system("cd #{neptuno_path} && docker compose up #{service} -d")
+          system("cd #{neptuno_path} && docker attach #{project}-#{service}-1")
         end
       end
     end

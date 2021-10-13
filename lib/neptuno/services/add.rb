@@ -17,6 +17,7 @@ module Neptuno
         clone_into_folder(repo, name)
         add_dockerfile(name)
         add_procfile(name)
+        add_environment(name)
         add_service_to_dc(name)
       end
 
@@ -27,9 +28,9 @@ module Neptuno
 
       def clone_into_folder(repo, name)
         if repo.nil?
-          command.run("mkdir #{ude_path}/services/#{name}")
+          command.run("mkdir #{neptuno_path}/services/#{name}")
         else
-          command.run("git clone --recurse-submodules #{repo} #{neptuno_path}/services/#{name}")
+          command.run("cd #{neptuno_path} && git submodule add #{repo} ./services/#{name}")
         end
       end
 
@@ -39,11 +40,48 @@ module Neptuno
       end
 
       def add_procfile(name)
-        file.create_file("#{neptuno_path}/Procfiles/#{name}/Procfile")
+        file.create_file("#{neptuno_path}/procfiles/#{name}/Procfile")
+      end
+
+      def add_environment(name)
+        file.create_file("#{neptuno_path}/environments/#{name}/default")
       end
 
       def add_service_to_dc(name)
-        name
+        puts(<<~EOT)
+          #---------------------------------------------------------------
+          # Registered #{name} as a service. You can now add it to the docker-compose.yml:
+          #---------------------------------------------------------------
+
+          version: '3'
+          services:
+            ##########################
+            # #{name}
+            ##########################
+            #{name}:
+              stdin_open: true
+              tty: true
+              command: ash
+              build: 
+                context: .
+                dockerfile: ./dockerfiles/#{name}/Dockerfile
+              env_file: 
+                - ./environments/#{name}/default
+              # volumes: 
+              #   -
+              # ports: 
+              #   -
+              # depends_on: 
+              #   -
+
+          #---------------------------------------------------------------
+          # Next steps
+          #---------------------------------------------------------------
+
+          Add the service's Dockerfile at ./dockerfiles/#{name}/Dockerfile
+          Add the service's Environments at ./environments/#{name}/default
+          Add the service's Procfile at ./procfiles/#{name}/Procfile
+        EOT
       end
     end
   end

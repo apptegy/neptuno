@@ -11,7 +11,7 @@ module Neptuno
 
       def call(services: [], **options)
         command_services_to("build", all: options.fetch(:all), services_as_args: services) do |services|
-          system("docker compose build #{services.join(" ")} --parallel")
+          system("cd #{neptuno_path} && docker compose build #{services.join(" ")} --parallel")
         end
       end
     end

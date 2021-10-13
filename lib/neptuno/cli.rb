@@ -26,5 +26,6 @@ module Neptuno
     register "git stash", ::Neptuno::Git::Stash
     register "git pull", ::Neptuno::Git::Pull
     register "install", ::Neptuno::CLI::Install
+    register "environment update", Environment::Update
   end
 end

@@ -11,7 +11,7 @@ module Neptuno
       desc "Initializes a Neptuno project folder structure"
 
       WORK_TREE = {"." => ["docker-compose.yml", ".tmuxinator.yml",
-        {"services" => [], "dockerfiles" => [], "procfiles" => [], "provisioners" => []}]}.freeze
+        {"services" => [], "dockerfiles" => [], "procfiles" => [], "environments" => []}]}.freeze
 
       CONFIG = nil
 

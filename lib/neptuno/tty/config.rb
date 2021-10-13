@@ -16,7 +16,7 @@ module Neptuno
       def services
         s = config.fetch("services")
         abort ABORT_MESSAGE if s.count == 0
-        s
+        s.sort
       end
 
       def configured_services

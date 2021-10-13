@@ -4,41 +4,68 @@ module Neptuno
   module Overmind
     # Build docker container for Neptuno project
     class Connect < Neptuno::CLI::Base
-      desc "Overmind: Connect to processes inside docker containers"
+      desc "Overmind: Start processes inside docker containers"
 
       option :force, type: :boolean, default: false, desc: "Try to connect disrigarding container status"
-      argument :service, type: :string, required: false, desc: "Optional service"
+      option :all, type: :boolean, default: false, desc: "Run on all services"
+      option :up, type: :boolean, default: false, desc: "Try to start containers before connecting"
+      option :start, type: :boolean, default: false, desc: "Try to start processes in containers before connecting"
+      argument :services, type: :array, required: false, desc: "Optional list of services"
 
-      def call(service: "", **options)
-        command_service_to("connect to procs", service_as_args: service) do |service|
-          count = 0
-          spinner = ::TTY::Spinner.new("[:spinner] Waiting for #{service} container to be healthy", format: :dots)
-          loop do
-            ps = `cd #{neptuno_path} && docker compose ps`.split("\n").find { |s| s.include?("#{project}_#{service}_1") }
-            status = :dead if ps.include?("exited")
-            status = :starting if ps.include?("starting")
-            status = :unhealthy if ps.include?("(unhealthy")
-            status = :healthy if ps.include?("(healthy")
-            status = :force if options.fetch(:force)
-            case status
-            when :force
-              break
-            when :dead
-              bort "Can't connect to dead container: #{project}_#{service}_1"
-            when :starting
-              spinner.auto_spin if count == 0
-            when :unhealthy
-              abort "Can't connect to unhealthy container: #{project}_#{service}_1"
-            when :healthy
-              break
-            end
-            count += 1
-            sleep(5)
+      def call(services: [], **options)
+        multi_spinner = ::TTY::Spinner::Multi.new("[:spinner] Services")
+        spinners = {}
+        count = 0
+        command_services_to("connect to procs", all: options.fetch(:all), services_as_args: services) do |services|
+          system("cd #{neptuno_path} && docker compose up -d #{services.join(" ")}") if options.fetch(:up)
+          services.sort.each do |service|
+            spinners[service] ||= multi_spinner.register("[:spinner] #{service}")
+            spinners[service].auto_spin
           end
-          system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N")
-          spinner.success("Connecting")
-          sleep 1
-          system("cd #{neptuno_path}/procfiles/#{service} && overmind connect shell")
+          loop do
+            ps = `cd #{neptuno_path} && docker compose ps`.split("\n").compact
+
+            services.sort.each do |service|
+              next if service == ""
+              service_ps = ps.find { |s| s.include?("#{project}") && s.include?(" #{service} ") }
+              status = :dead if service_ps.to_s.include?("exited")
+              status = :starting if service_ps.to_s.include?("starting")
+              status = :unhealthy if service_ps.to_s.include?("(unhealthy")
+              status = :healthy if service_ps.to_s.include?("(healthy")
+              status = :force if options.fetch(:force)
+
+              case status
+              when :force
+                spinners[service].success
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
+              when :dead
+                spinners[service].error if count == 0
+              when :starting
+                # do nothing
+              when :unhealthy
+                spinners[service].error if spinners[service].instance_variable_get("@state") == :spinning
+              when :healthy
+                spinners[service].success
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1` if options.fetch(:start)
+              else
+                spinners[service].error
+              end
+            end
+            break if spinners.values.map { |s| s.instance_variable_get("@state") }.uniq.all?(:stopped)
+            count += 1
+            sleep(10)
+          end
+          neptuno_procs, docker_procs = Neptuno::CLI::List.new.running_services
+          running_services = neptuno_procs.select{|k,v| v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
+          spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
+          spinner.auto_spin
+          sleep(5) if options.fetch(:start)
+          spinner.stop
+          if services.count == 1
+            system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
+          else
+            system("cd #{neptuno_path} && tmuxinator start neptuno #{running_services}") 
+          end
         end
       end
     end

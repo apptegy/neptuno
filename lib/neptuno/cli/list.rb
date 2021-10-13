@@ -9,16 +9,22 @@ module Neptuno
 
       desc "List containers and their processes"
 
-      def call(**)
-        proc_files = Dir["procfiles/**/Procfile"]
-        neptuno_procs = proc_files.map { |f| [f.split("\/")[1], File.read(f).split("\n").map { |s| s.split(":").first }] }.to_h
+      def running_services
+        proc_files = Dir.glob("procfiles/**/Procfile", base: neptuno_path)
+        neptuno_procs = proc_files.map { |f| [f.split("\/")[1], File.read(neptuno_path + "/" + f).split("\n").map { |s| s.split(":").first }] }.to_h
 
-        docker_containers = `docker ps --format '{{.Names}}'`.split("\n").select { |dc| dc.match(/#{project}/) }
-        docker_procs = docker_containers.map { |p| [p.split("_")[1..-2].join("_"), `docker top #{p}`.lines.count - 2] }.to_h
+        docker_containers = `cd #{neptuno_path} && docker compose top`.split("\n\n").map{|x| x.split("\n")}
+        docker_procs = docker_containers.map{|p| [p.first.match(/#{project}[-_](.*)[-_]1/)[1], p[2..-1].map{|x|x.split[2]}.tally.values.max - 1]}.to_h
+
+        [neptuno_procs, docker_procs]
+      end
+
+      def call(**)
+        neptuno_procs, docker_procs = running_services
 
         neptuno_procs.each do |k, v|
           if docker_procs[k]
-            puts "\e[32m#{docker_procs[k]}@#{k}\e[0m: #{v.join(", ")}"
+            puts "\e[32m#{v.count > 0 ? docker_procs[k] : '-'}@#{k}\e[0m: #{v.join(", ")}"
           else
             puts "\e[31m0@#{k}\e[0m: #{v.join(", ")}"
           end

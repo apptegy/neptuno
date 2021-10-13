@@ -2,7 +2,7 @@
 
 module Neptuno
   module CLI
-    # Build docker container for Neptuno project
+    # Base cli class for Neptuno
     class Base < Dry::CLI::Command
       include Neptuno::TTY::Config
       include TTY::Prompt

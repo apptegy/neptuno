@@ -24,7 +24,7 @@ module Neptuno
 
             services.sort.each do |service|
               next if service == ""
-              service_ps = ps.find { |s| s.to_s.include?("#{project}_#{service}_1") }
+              service_ps = ps.find { |s| s.include?("#{project}") && s.include?(" #{service} ") }
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
               status = :unhealthy if service_ps.to_s.include?("(unhealthy")

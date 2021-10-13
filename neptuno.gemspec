@@ -6,13 +6,13 @@ Gem::Specification.new do |spec|
   spec.name = "neptuno"
   spec.version = Neptuno::VERSION
   spec.authors = ["Roberto Plancarte"]
-  spec.email = ["roberto.plancarte@apptegy.com"]
+  spec.email = ["roberto.plancarte@gmail.com"]
 
   spec.summary = "Unified Development Environment CLI"
   spec.description = "A CLI for Roberto Plancarte's Neptuno architectural style"
   spec.homepage = "https://github.com/robertoplancarte/neptuno.git"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.0.0"
+  spec.required_ruby_version = ">= 2.6.1"
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
