@@ -56,7 +56,7 @@ module Neptuno
             sleep(10)
           end
           neptuno_procs, docker_procs = Neptuno::CLI::List.new.running_services
-          running_services = neptuno_procs.select { |k, v| !docker_procs[k].nil? && v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
+          #running_services = neptuno_procs.select { |k, v| !docker_procs[k].nil? && v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
           spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
           spinner.auto_spin
           sleep(5) if options.fetch(:start)
@@ -64,7 +64,7 @@ module Neptuno
           if services.count == 1
             system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
           else
-            system("cd #{neptuno_path} && tmuxinator start neptuno #{running_services}")
+            system("cd #{neptuno_path} && tmuxinator start neptuno #{docker_procs.keys.join(' ')}")
           end
         end
       end

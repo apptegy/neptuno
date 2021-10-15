@@ -20,7 +20,6 @@ module Neptuno
         install "tmux"
         install "overmind"
         install "tmuxinator"
-        install "wtf"
       end
 
       def install(package)
@@ -28,6 +27,7 @@ module Neptuno
           puts "#{package} is already installed"
         else
           puts "Installing #{package}"
+          system("brew install #{package}")
         end
       end
     end
