@@ -11,7 +11,7 @@ module Neptuno
 
       def call(services: [], **options)
         command_services_to("come up", all: options.fetch(:all), services_as_args: services) do |services|
-          system("cd #{neptuno_path} && docker compose up -d #{services.join(" ")}")
+          system("cd #{neptuno_path} && docker-compose up -d #{services.join(" ")}")
         end
       end
     end

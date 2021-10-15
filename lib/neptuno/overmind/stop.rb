@@ -12,7 +12,7 @@ module Neptuno
       def call(services: [], **options)
         command_services_to("stop procs", all: options.fetch(:all), services_as_args: services) do |services|
           services.each do |service|
-            system("cd #{neptuno_path} && docker compose exec #{service} kill -9 -1")
+            system("cd #{neptuno_path} && docker-compose exec #{service} kill -9 -1")
             `cd #{neptuno_path}/procfiles/#{service} && rm .overmind.sock  > /dev/null 2>&1`
           end
         end

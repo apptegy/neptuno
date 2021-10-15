@@ -13,7 +13,7 @@ module Neptuno
         proc_files = Dir.glob("procfiles/**/Procfile", base: neptuno_path)
         neptuno_procs = proc_files.map { |f| [f.split("\/")[1], File.read(neptuno_path + "/" + f).split("\n").map { |s| s.split(":").first }] }.to_h
 
-        docker_containers = `cd #{neptuno_path} && docker compose top`.split("\n\n").map { |x| x.split("\n") }
+        docker_containers = `cd #{neptuno_path} && docker-compose top`.split("\n\n").map { |x| x.split("\n") }
         docker_procs = docker_containers.map { |p| [p.first.match(/#{project}[-_](.*)[-_]1/)[1], p[2..].map { |x| x.split[2] }.tally.values.max - 1] }.to_h
 
         [neptuno_procs, docker_procs]
