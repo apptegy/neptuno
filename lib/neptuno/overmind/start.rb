@@ -20,7 +20,7 @@ module Neptuno
             spinners[service].auto_spin
           end
           loop do
-            ps = `cd #{neptuno_path} && docker compose ps`.split("\n").compact
+            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact
 
             services.sort.each do |service|
               next if service == ""
