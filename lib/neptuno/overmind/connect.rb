@@ -27,7 +27,6 @@ module Neptuno
 
             services.sort.each do |service|
               service_ps = ps.find { |s| s.include?(project.to_s) && s.include?(" #{service} ") }
-              next if service_ps.nil?
 
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
@@ -61,7 +60,6 @@ module Neptuno
           spinner.auto_spin
           spinner.stop
           if services.count == 1
-            spinners[service].success
             `cd #{neptuno_path}/procfiles/#{services.first} && overmind start -D -N  > /dev/null 2>&1`
             system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
           else
