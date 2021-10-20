@@ -2,7 +2,6 @@
   <img width="200" alt="Neptuno Logo" src="docs/logo_shadow.svg">
 </p>
 
-
 # Neptuno
 
 Neptuno is an "environment as code" framework; which aims to be opinionated enough to get you going fast, and customizable enough to run just the way you work.
@@ -27,7 +26,30 @@ Or install it yourself as:
 
 Once installed you can run neptuno by its executable to see the options available.
 
-    $ bundle neptuno
+    $ bundle exec neptuno
+
+If you are using a version manager for Ruby you may want to setup an alias to the executable shim so that you can run Neptuno even when your manager switches ruby versions.
+Notice that you may have to change the path depending on which Ruby version you use globally:
+
+### rbenv
+Add this to your ~/.zshrc
+```ruby
+alias uno='/Users/$USER/.rvm/gems/ruby-3.0.2/bin/neptuno'
+```
+
+### asdf
+Add this to your ~/.zshrc
+```ruby
+alias uno='/Users/$USER/.asdf/installs/ruby/3.0.2/bin/neptuno'
+```
+
+## Ubuntu Users
+Add this to your neptuno.yml
+```yml
+docker_delimiter: "_"
+```
+The path you need for rbenv and asdf may be different.
+
 
 ## Development
 

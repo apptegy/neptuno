@@ -23,11 +23,12 @@ module Neptuno
             spinners[service].auto_spin
           end
           loop do
-            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact
+            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact.select{|x| x.match(/^\s*#{project}/) }
 
             services.sort.each do |service|
-              next if service == ""
               service_ps = ps.find { |s| s.include?(project.to_s) && s.include?(" #{service} ") }
+              next if service_ps.nil?
+
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
               status = :unhealthy if service_ps.to_s.include?("(unhealthy")
@@ -53,10 +54,6 @@ module Neptuno
             end
             break if spinners.values.map { |s| s.instance_variable_get("@state") }.uniq.all?(:stopped)
             count += 1
-            if options.fetch(:start)
-              sleep(5) 
-              `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1` if options.fetch(:start)
-            end
           end
           neptuno_procs, docker_procs = Neptuno::CLI::List.new.running_services
           #running_services = neptuno_procs.select { |k, v| !docker_procs[k].nil? && v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
@@ -64,6 +61,8 @@ module Neptuno
           spinner.auto_spin
           spinner.stop
           if services.count == 1
+            spinners[service].success
+            system("cd #{neptuno_path}/procfiles/#{services.first} && overmind start")
             system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
           else
             system("cd #{neptuno_path} && tmuxinator start neptuno #{docker_procs.keys.join(' ')}")
