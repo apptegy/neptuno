@@ -47,7 +47,7 @@ module Neptuno
                 spinners[service].error if spinners[service].instance_variable_get("@state") == :spinning
               when :healthy
                 spinners[service].success
-                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1` if options.fetch(:start)
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
               else
                 spinners[service].error
               end
@@ -55,14 +55,14 @@ module Neptuno
             break if spinners.values.map { |s| s.instance_variable_get("@state") }.uniq.all?(:stopped)
             count += 1
           end
-          neptuno_procs, docker_procs = Neptuno::CLI::List.new.running_services
+          _, docker_procs = Neptuno::CLI::List.new.running_services
           #running_services = neptuno_procs.select { |k, v| !docker_procs[k].nil? && v.count > 0 && docker_procs[k] >= v.count }.keys.join(" ")
           spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
           spinner.auto_spin
           spinner.stop
           if services.count == 1
             spinners[service].success
-            system("cd #{neptuno_path}/procfiles/#{services.first} && overmind start")
+            `cd #{neptuno_path}/procfiles/#{services.first} && overmind start -D -N  > /dev/null 2>&1`
             system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
           else
             system("cd #{neptuno_path} && tmuxinator start neptuno #{docker_procs.keys.join(' ')}")
