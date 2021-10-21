@@ -4,6 +4,7 @@ module Neptuno
   module Overmind
     # Build docker container for Neptuno project
     class Start < Neptuno::CLI::Base
+      include ::Neptuno::TTY::Config
       desc "Overmind: Start processes inside docker containers"
 
       option :force, type: :boolean, default: false, desc: "Try to connect disrigarding container status"
@@ -11,6 +12,7 @@ module Neptuno
       argument :services, type: :array, required: false, desc: "Optional list of services"
 
       def call(services: [], **options)
+        dd = config.fetch("docker_delimiter") || "-"
         multi_spinner = ::TTY::Spinner::Multi.new("[:spinner] Services")
         spinners = {}
         count = 0
@@ -20,11 +22,11 @@ module Neptuno
             spinners[service].auto_spin
           end
           loop do
-            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact
+            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact.select { |x| x.match(/^\s*#{project}/) }
 
             services.sort.each do |service|
               next if service == ""
-              service_ps = ps.find { |s| s.include?(project.to_s) && s.include?(" #{service} ") }
+              service_ps = ps.find { |s| s.include?(project.to_s) && s.include?("#{dd}#{service}#{dd}") }
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
               status = :unhealthy if service_ps.to_s.include?("(unhealthy")
