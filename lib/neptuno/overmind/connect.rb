@@ -11,6 +11,7 @@ module Neptuno
       option :all, type: :boolean, default: false, desc: "Run on all services"
       option :up, type: :boolean, default: false, desc: "Try to start containers before connecting"
       option :tmux, type: :boolean, default: false, desc: "Connect to services using Tmux"
+      option :tmux_sessions, type: :boolean, default: false, desc: "Connect to services using Tmux"
       argument :services, type: :array, required: false, desc: "Optional list of services"
 
       def call(services: [], **options)
@@ -44,7 +45,7 @@ module Neptuno
                 `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&`
               when :dead
                 spinners[service].update(state: "dead       ")
-                spinners[service].error if count == 0
+                spinners[service].error
               when :starting
                 spinners[service].update(state: "starting   ")
               when :unhealthy
@@ -64,16 +65,26 @@ module Neptuno
           end
           spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
           spinner.auto_spin
-          spinners.select{|k,v| v.instance_variable_get("@succeeded") == :success }.keys.each do |service|
-            `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
-          end
-          sleep(5)
+
+          healthy_services = spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys
           spinner.stop
-          healthy_services = spinners.select{|k,v| v.instance_variable_get("@succeeded") == :success }.keys
-          if options.fetch(:tmux)
-            system("cd #{neptuno_path} && tmuxinator start neptuno #{healthy_services.join(" ")}")
+          if config.fetch("procfile_manager") == "tmux"
+            healthy_services.each do |service|
+              pid = spawn("cd #{neptuno_path} && tmuxinator start neptuno_#{service} #{service} -n #{service}", 3 => "/dev/null")
+              Process.detach(pid)
+              puts "Neptuno started tmux session for: #{service}"
+            end
           else
-            system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
+            spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys.each do |service|
+              `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
+            end
+            sleep(5)
+            spinner.stop
+            if options.fetch(:tmux)
+              system("cd #{neptuno_path} && tmuxinator start neptuno #{healthy_services.join(" ")}")
+            else
+              system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
+            end
           end
         end
       end
