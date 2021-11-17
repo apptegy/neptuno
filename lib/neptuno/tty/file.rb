@@ -21,7 +21,7 @@ module Neptuno
       end
 
       def service
-        Dir.pwd.match(%r{services/([^/]*)})&.captures&.first
+        ENV['PWD'].match(%r{services/([^/]*)})&.captures&.first
       end
 
       def neptuno_path
