@@ -19,10 +19,12 @@ module Neptuno
     register "attach", Docker::Attach, aliases: ["a"]
     register "start", Overmind::Start, aliases: ["s"]
     register "stop", Overmind::Stop, aliases: ["x"]
+    register "update", Services::Update, aliases: ["su"]
     register "connect", Overmind::Connect, aliases: ["c"]
     register "services list", Services::List, aliases: ["ls"]
     register "services add", Services::Add
     register "services destroy", Services::Destroy, aliases: ["rm"]
+    register "services update", Services::Update, aliases: ["su"]
     register "git stash", ::Neptuno::Git::Stash
     register "git pull", ::Neptuno::Git::Pull
     register "install", ::Neptuno::CLI::Install
