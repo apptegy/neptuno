@@ -18,16 +18,16 @@ module Neptuno
       end
 
       def command_service_to(request, service_as_args: "")
+        chosen_service ||= service_as_args&.empty? ? nil : service_as_args
         chosen_service ||= service if in_service?
-        chosen_service ||= service_as_args.empty? ? nil : service_as_args
         chosen_service ||= prompt.select("Command service to #{request}:", services)
         yield chosen_service, project
       end
 
       def command_services_to(request, all: nil, services_as_args: [])
         chosen_services = services if all
+        chosen_services ||= services_as_args&.empty? ? nil : services_as_args
         chosen_services ||= [service] if in_service?
-        chosen_services ||= services_as_args.empty? ? nil : services_as_args
         chosen_services ||= configured_services.empty? ? nil : configured_services
         chosen_services ||= prompt.multi_select("Command services to #{request}:", services)
         yield chosen_services, project

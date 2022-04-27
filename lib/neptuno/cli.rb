@@ -12,6 +12,7 @@ module Neptuno
     register "init", Init
     register "ls", List, aliases: ["ps"]
     register "config", Configure, aliases: %w[configure conf cc]
+    register "execute", Execute, aliases: ["e"]
     register "build", ::Neptuno::Docker::Build, aliases: ["b"]
     register "up", Docker::Up, aliases: ["u"]
     register "down", Docker::Down, aliases: ["d"]
@@ -30,5 +31,6 @@ module Neptuno
     register "git pull", ::Neptuno::Git::Pull
     register "install", ::Neptuno::CLI::Install
     register "environment update", Environment::Update
+    register "environment config", Environment::Config
   end
 end
