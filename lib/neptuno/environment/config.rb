@@ -18,4 +18,3 @@ module Neptuno
     end
   end
 end
-

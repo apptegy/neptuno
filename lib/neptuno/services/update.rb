@@ -15,6 +15,7 @@ module Neptuno
           services.each do |service|
             puts "---Updating #{service}---"
             current_branch = `git branch --show-current`
+            puts current_branch
             system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git stash save -u -q neptuno_stash")
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout main 2>/dev/null`
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout master 2>/dev/null`
