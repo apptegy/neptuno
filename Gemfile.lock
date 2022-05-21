@@ -3,6 +3,7 @@ PATH
   specs:
     neptuno (0.3.0)
       dry-cli
+      hirb
       tty-command
       tty-config
       tty-file
@@ -19,6 +20,7 @@ GEM
     builder (3.2.4)
     diff-lcs (1.5.0)
     dry-cli (0.7.0)
+    hirb (0.7.3)
     minitest (5.14.4)
     minitest-reporters (1.4.3)
       ansi

@@ -16,7 +16,7 @@ module Neptuno
         multi_spinner = ::TTY::Spinner::Multi.new("[:spinner] Services")
         spinners = {}
         count = 0
-        command_services_to("connect to procs", all: options.fetch(:all), services_as_args: services) do |services|
+        command_services_to("activate to services", all: options.fetch(:all), services_as_args: services) do |services|
           system("cd #{neptuno_path} && docker-compose up -d #{services.join(" ")}")
           running_services = ::Neptuno::CLI::List.new.running_services.first.keys
           running_services.sort.each do |service|

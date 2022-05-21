@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "tty-which"
   spec.add_dependency "tty-spinner"
   spec.add_dependency "zeitwerk"
+  spec.add_dependency "hirb"
 
   spec.add_development_dependency "minitest-reporters"
   spec.add_development_dependency "standard"
