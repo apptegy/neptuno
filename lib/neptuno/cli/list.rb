@@ -10,7 +10,7 @@ module Neptuno
       include DOTIW::Methods
 
       desc 'List containers and their processes'
-      option :relative, aliases: ['r'], type: :boolean, default: false, desc: "Use relative time in 'last commit date' field"
+      option :relative, aliases: ['r'], type: :boolean, default: true, desc: "Use relative time in 'last commit date' field"
 
       def running_services
         proc_files = Dir.glob('procfiles/**/Procfile', base: neptuno_path)

@@ -9,7 +9,4 @@ gem "rake"
 
 gem "minitest"
 
-# For relative times
-gem 'dotiw'
-
 gem "rubocop", require: false
