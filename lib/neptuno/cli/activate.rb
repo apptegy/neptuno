@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
 module Neptuno
-  module Overmind
-    # Build docker container for Neptuno project
-    class Connect < Neptuno::CLI::Base
+  module CLI
+    # Init Neptuno files
+    class Activate < Neptuno::CLI::Base
       include ::Neptuno::TTY::Config
-      desc "Overmind: Connect to processes inside docker containers"
+      desc "Bring services containers up and start their processes"
 
-      option :force, type: :boolean, default: false, desc: "Try to connect disrigarding container status"
+      option :force, type: :boolean, default: false, desc: "Try to start disrigarding container status"
       option :all, type: :boolean, default: false, desc: "Run on all services"
-      option :up, type: :boolean, default: false, desc: "Try to start containers before connecting"
-      option :tmux, type: :boolean, default: false, desc: "Connect to services using Tmux"
-      option :tmux_sessions, type: :boolean, default: false, desc: "Connect to services using Tmux"
       argument :services, type: :array, required: false, desc: "Optional list of services"
 
       def call(services: [], **options)
@@ -19,8 +16,8 @@ module Neptuno
         multi_spinner = ::TTY::Spinner::Multi.new("[:spinner] Services")
         spinners = {}
         count = 0
-        command_services_to("connect to procs", all: options.fetch(:all), services_as_args: services) do |services|
-          system("cd #{neptuno_path} && docker-compose up -d #{services.join(" ")}") if options.fetch(:up)
+        command_services_to("activate to services", all: options.fetch(:all), services_as_args: services) do |services|
+          system("cd #{neptuno_path} && docker-compose up -d #{services.join(" ")}")
           running_services = ::Neptuno::CLI::List.new.running_services.first.keys
           running_services.sort.each do |service|
             spinners[service] ||= multi_spinner.register("[:spinner] :state #{service}")
@@ -42,7 +39,7 @@ module Neptuno
               case status
               when :force
                 spinners[service].success
-                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&`
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
               when :dead
                 spinners[service].update(state: "dead       ")
                 spinners[service].error
@@ -54,6 +51,7 @@ module Neptuno
               when :healthy
                 spinners[service].update(state: "ready      ")
                 spinners[service].success
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
               else
                 spinners[service].update(state: "down       ")
                 spinners[service].error
@@ -63,29 +61,10 @@ module Neptuno
             count += 1
             sleep(5)
           end
-          spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
+          spinner = ::TTY::Spinner.new("Neptuno: Starting[:spinner]", format: :dots)
           spinner.auto_spin
 
-          healthy_services = spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys
           spinner.stop
-          if config.fetch("procfile_manager") == "tmux"
-            healthy_services.each do |service|
-              pid = spawn("cd #{neptuno_path} && tmuxinator start neptuno_#{service} #{service} -n #{service}", 3 => "/dev/null")
-              Process.detach(pid)
-              puts "Neptuno started tmux session for: #{service}"
-            end
-          else
-            spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys.each do |service|
-              `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
-            end
-            sleep(5)
-            spinner.stop
-            if options.fetch(:tmux)
-              system("cd #{neptuno_path} && tmuxinator start neptuno #{healthy_services.join(" ")}")
-            else
-              system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell")
-            end
-          end
         end
       end
     end

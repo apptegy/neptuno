@@ -6,6 +6,7 @@ require "tty-command"
 require "tty-which"
 require "tty-file"
 require "tty-spinner"
+require "hirb"
 
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect("neptuno" => "Neptuno")
