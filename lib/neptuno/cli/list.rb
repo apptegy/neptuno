@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-require 'dotiw'
-include DOTIW::Methods
+
 module Neptuno
   module CLI
     # Init Neptuno files
@@ -8,6 +7,7 @@ module Neptuno
     class List < Neptuno::CLI::Base
       include TTY::File
       include TTY::Config
+      include DOTIW::Methods
 
       desc 'List containers and their processes'
       option :relative, aliases: ['r'], type: :boolean, default: false, desc: "Use relative time in 'last commit date' field"
