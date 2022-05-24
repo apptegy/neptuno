@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (0.3.0)
+    neptuno (0.3.1)
       dry-cli
       hirb
       tty-command

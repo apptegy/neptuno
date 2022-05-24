@@ -22,14 +22,14 @@ module Neptuno
       def service_current_branches
         branches = `cd #{neptuno_path} && git submodule foreach 'git branch --show-current'`
         branches.lines.each_slice(2).map do |service, branch|
-          [service.match(%r{services/(.*)'}).to_a.last, branch.strip]
+          [service.match(%r{services/(.*)'}).to_a.last, branch.to_s.strip]
         end.to_h
       end
 
       def last_commit_date
         dates = `cd #{neptuno_path} && git submodule foreach 'git log -1 --format=%cd'`
         dates.lines.each_slice(2).map do |service, date|
-          [service.match(%r{services/(.*)'}).to_a.last, date.strip]
+          [service.match(%r{services/(.*)'}).to_a.last, date.to_s.strip]
         end.to_h
       end
 
