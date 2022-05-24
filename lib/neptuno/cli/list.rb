@@ -49,8 +49,8 @@ module Neptuno
         dates = last_commit_date
 
         procs = neptuno_procs.map do |name, *processes|
-          displayDate = get_display_date(dates[name], options.fetch(:relative))
-          { state: docker_procs[name].nil? ? 'off' : 'on', name: name, branch: branches[name], last_commit: displayDate, processes: processes }
+          display_date = get_display_date(dates[name], options.fetch(:relative))
+          { state: docker_procs[name].nil? ? 'off' : 'on', name: name, branch: branches[name], last_commit: display_date, processes: processes }
         end
 
         puts Hirb::Helpers::AutoTable.render(procs.sort { |a, b| [b[:state], a[:name]] <=> [a[:state], b[:name]] }, fields: [:state, :name, :branch, :last_commit, :processes])
