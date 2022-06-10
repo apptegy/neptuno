@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (0.3.1)
+    neptuno (0.4.0)
       dry-cli
       hirb
       tty-command
@@ -57,7 +57,7 @@ GEM
     tty-color (0.6.0)
     tty-command (0.10.1)
       pastel (~> 0.8)
-    tty-config (0.5.0)
+    tty-config (0.5.1)
     tty-cursor (0.7.1)
     tty-file (0.10.0)
       diff-lcs (~> 1.3)

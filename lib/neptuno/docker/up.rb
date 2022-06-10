@@ -13,7 +13,7 @@ module Neptuno
       def call(services: [], **options)
         dd = config.fetch("docker_delimiter") || "-"
         command_services_to("come up", all: options.fetch(:all), services_as_args: services) do |services, project|
-          system("cd #{neptuno_path} && docker-compose up -d #{services.join(" ")}")
+          system("cd #{neptuno_path} && docker compose up -d #{services.join(" ")}")
           system("cd #{neptuno_path} && docker logs -f #{project}#{dd}#{services.first}#{dd}1") if options.fetch(:log)
         end
       end
