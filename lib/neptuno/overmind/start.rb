@@ -48,7 +48,7 @@ module Neptuno
                 spinners[service].update(state: "starting   ")
               when :unhealthy
                 spinners[service].update(state: "unhealthy  ")
-                spinners[service].error if spinners[service].instance_variable_get("@state") == :spinning && count > 50
+                spinners[service].error if spinners[service].instance_variable_get(:@state) == :spinning && count > 50
               when :healthy
                 spinners[service].update(state: "ready      ")
                 spinners[service].success
@@ -58,7 +58,7 @@ module Neptuno
                 spinners[service].error
               end
             end
-            break if spinners.values.map { |s| s.instance_variable_get("@state") }.uniq.all?(:stopped)
+            break if spinners.values.map { |s| s.instance_variable_get(:@state) }.uniq.all?(:stopped)
             count += 1
             sleep(5)
           end

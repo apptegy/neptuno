@@ -50,7 +50,7 @@ module Neptuno
                 spinners[service].update(state: "starting   ")
               when :unhealthy
                 spinners[service].update(state: "unhealthy  ")
-                spinners[service].error if spinners[service].instance_variable_get("@state") == :spinning && count > 50
+                spinners[service].error if spinners[service].instance_variable_get(:@state) == :spinning && count > 50
               when :healthy
                 spinners[service].update(state: "ready      ")
                 spinners[service].success
@@ -59,14 +59,14 @@ module Neptuno
                 spinners[service].error
               end
             end
-            break if spinners.values.map { |s| s.instance_variable_get("@state") }.uniq.all?(:stopped)
+            break if spinners.values.map { |s| s.instance_variable_get(:@state) }.uniq.all?(:stopped)
             count += 1
             sleep(5)
           end
           spinner = ::TTY::Spinner.new("Neptuno: Connecting[:spinner]", format: :dots)
           spinner.auto_spin
 
-          healthy_services = spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys
+          healthy_services = spinners.select { |k, v| v.instance_variable_get(:@succeeded) == :success }.keys
           spinner.stop
           if config.fetch("procfile_manager") == "tmux"
             healthy_services.each do |service|
@@ -75,7 +75,7 @@ module Neptuno
               puts "Neptuno started tmux session for: #{service}"
             end
           else
-            spinners.select { |k, v| v.instance_variable_get("@succeeded") == :success }.keys.each do |service|
+            spinners.select { |k, v| v.instance_variable_get(:@succeeded) == :success }.keys.each do |service|
               `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1`
             end
             sleep(5)
