@@ -19,6 +19,7 @@ module Neptuno
     register "down", Docker::Down, aliases: ["d"]
     register "restart", Docker::Restart, aliases: ["r"]
     register "attach", Docker::Attach, aliases: ["at"]
+    register "k8s", K8s::Attach, aliases: ["k"]
     register "log", Docker::Log, aliases: ["l"]
     register "start", Overmind::Start, aliases: ["s"]
     register "stop", Overmind::Stop, aliases: ["x"]

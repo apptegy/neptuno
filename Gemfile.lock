@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (0.4.1)
+    neptuno (0.5.0)
       dotiw
       dry-cli
       hirb
@@ -31,7 +31,7 @@ GEM
       i18n
     dry-cli (0.7.0)
     hirb (0.7.3)
-    i18n (1.10.0)
+    i18n (1.11.0)
       concurrent-ruby (~> 1.0)
     minitest (5.16.0)
     minitest-reporters (1.5.0)
@@ -69,7 +69,7 @@ GEM
     tty-color (0.6.0)
     tty-command (0.10.1)
       pastel (~> 0.8)
-    tty-config (0.5.1)
+    tty-config (0.6.0)
     tty-cursor (0.7.1)
     tty-file (0.10.0)
       diff-lcs (~> 1.3)
