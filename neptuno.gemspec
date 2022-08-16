@@ -11,10 +11,10 @@ Gem::Specification.new do |spec|
   spec.summary = 'Unified Development Environment CLI'
   spec.description = "A CLI for Roberto Plancarte's Neptuno architectural style"
   spec.homepage = 'https://github.com/robertoplancarte/neptuno.git'
-  spec.license = 'MIT'
+  spec.license = 'Apache 2.0'
   spec.required_ruby_version = '>= 2.6.1'
 
-  spec.metadata['allowed_push_host'] = "TODO: Set to 'https://mygemserver.com'"
+  # spec.metadata['allowed_push_host'] = "TODO: Set to 'https://mygemserver.com'"
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
