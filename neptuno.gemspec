@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.email = ['roberto.plancarte@gmail.com']
 
   spec.summary = 'Unified Development Environment CLI'
-  spec.description = "A CLI for Roberto Plancarte's Neptuno architectural style"
-  spec.homepage = 'https://github.com/robertoplancarte/neptuno.git'
+  spec.description = "A CLI for Neptuno distributed architectural style applications"
+  spec.homepage = 'https://github.com/apptegy/neptuno'
   spec.license = 'Apache-2.0'
   spec.required_ruby_version = '>= 2.6.1'
 
