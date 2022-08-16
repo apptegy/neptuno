@@ -4,10 +4,9 @@ module Neptuno
   module Services
     # Add project to neptuno
     class List < Neptuno::CLI::Base
-      desc "List Neptuno projects"
+      desc 'List Neptuno projects'
 
-      def call(**)
-      end
+      def call(**); end
     end
   end
 end

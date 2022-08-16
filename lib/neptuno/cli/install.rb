@@ -10,16 +10,16 @@ module Neptuno
       include TTY::Config
       include TTY::Which
 
-      desc "Installs git, docker, tmux, tmuxinator and overmind"
+      desc 'Installs git, docker, tmux, tmuxinator and overmind'
 
       CONFIG = nil
 
       def call(**)
-        install "git"
-        install "docker"
-        install "tmux"
-        install "overmind"
-        install "tmuxinator"
+        install 'git'
+        install 'docker'
+        install 'tmux'
+        install 'overmind'
+        install 'tmuxinator'
       end
 
       def install(package)
