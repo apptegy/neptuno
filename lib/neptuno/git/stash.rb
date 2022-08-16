@@ -4,10 +4,10 @@ module Neptuno
   module Git
     # Stash all submodule changes
     class Stash < Neptuno::CLI::Base
-      desc "Git: stash all submodule changes"
+      desc 'Git: stash all submodule changes'
 
-      def call(services: [], **options)
-        system("git submodule foreach git stash")
+      def call(services: [], **_options)
+        system('git submodule foreach git stash')
       end
     end
   end

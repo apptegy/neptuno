@@ -8,12 +8,12 @@ module Neptuno
       include TTY::Config
       include TTY::File
 
-      desc "Add a Neptuno service with Git"
+      desc 'Add a Neptuno service with Git'
 
       def call(**)
-        name = prompt.ask("? Service name:")
+        name = prompt.ask('? Service name:')
         add_name_to_config(name)
-        repo = prompt.ask("? Git repo:")
+        repo = prompt.ask('? Git repo:')
         clone_into_folder(repo, name)
         add_dockerfile(name)
         add_procfile(name)
@@ -62,16 +62,16 @@ module Neptuno
               stdin_open: true
               tty: true
               command: ash
-              build: 
+              build:#{' '}
                 context: .
                 dockerfile: ./dockerfiles/#{name}/Dockerfile
-              env_file: 
+              env_file:#{' '}
                 - ./environments/#{name}/default
-              # volumes: 
+              # volumes:#{' '}
               #   -
-              # ports: 
+              # ports:#{' '}
               #   -
-              # depends_on: 
+              # depends_on:#{' '}
               #   -
 
           #---------------------------------------------------------------

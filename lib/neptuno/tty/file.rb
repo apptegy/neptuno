@@ -5,7 +5,7 @@ module Neptuno
     # Wrapper class for TTY gem
     module File
       TTY = ::TTY::File
-      ABORT_MESSAGE = "fatal: not a Neptuno repository (or any of the parent directories)"
+      ABORT_MESSAGE = 'fatal: not a Neptuno repository (or any of the parent directories)'
 
       def file
         TTY
@@ -13,7 +13,7 @@ module Neptuno
 
       # define path helpers
       def project
-        neptuno_path.split("/").last
+        neptuno_path.split('/').last
       end
 
       def in_service?
@@ -21,7 +21,7 @@ module Neptuno
       end
 
       def service
-        ENV["PWD"].match(%r{services/([^/]*)})&.captures&.first
+        ENV['PWD'].match(%r{services/([^/]*)})&.captures&.first
       end
 
       def neptuno_path
@@ -29,10 +29,10 @@ module Neptuno
 
         pwd = Dir.pwd
         loop do
-          return pwd if pwd == ""
-          return @base_path = pwd if Dir.children(pwd).include?("neptuno.yml")
+          return pwd if pwd == ''
+          return @base_path = pwd if Dir.children(pwd).include?('neptuno.yml')
 
-          pwd = pwd.split("/")[0..-2].join("/")
+          pwd = pwd.split('/')[0..-2].join('/')
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Neptuno
   module K8s
     class Attach < Neptuno::CLI::Base
