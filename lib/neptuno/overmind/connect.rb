@@ -88,7 +88,6 @@ module Neptuno
               begin
                 system("cd #{neptuno_path}/procfiles/#{services.first} && overmind connect shell", exception: true)
               rescue RuntimeError
-                puts 'sry'
                 system("cd #{neptuno_path} && docker compose exec #{service} kill -9 -1")
                 system("cd #{neptuno_path}/procfiles/#{service} && rm .overmind.sock  > /dev/null 2>&1")
                 system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1")
