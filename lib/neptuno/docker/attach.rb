@@ -9,10 +9,13 @@ module Neptuno
       option :up, type: :boolean, default: false, desc: 'Try to start containers before connecting'
 
       def call(**options)
-        dd = config.fetch('docker_delimiter') || '-'
         command_service_to('attach', service_as_args: options[:args].first) do |service, project|
           system("cd #{neptuno_path} && docker compose up -d #{service}") if options.fetch(:up)
-          system("cd #{neptuno_path} && docker attach #{project}#{dd}#{service}#{dd}1")
+          success = system("cd #{neptuno_path} && docker attach #{project}_#{service}_1")
+          unless success
+            puts "Trying #{project}-#{services.first}-1"
+            system("cd #{neptuno_path} && docker attach #{project}-#{service}-1")
+          end
         end
       end
     end

@@ -11,10 +11,13 @@ module Neptuno
       argument :services, type: :array, required: false, desc: 'Optional list of services'
 
       def call(services: [], **options)
-        dd = config.fetch('docker_delimiter') || '-'
         command_services_to('come up', all: options.fetch(:all), services_as_args: services) do |services, project|
           system("cd #{neptuno_path} && docker compose up -d #{services.join(' ')}")
-          system("cd #{neptuno_path} && docker logs -f #{project}#{dd}#{services.first}#{dd}1") if options.fetch(:log)
+          success = system("cd #{neptuno_path} && docker logs -f #{project}_#{services.first}_1") if options.fetch(:log)
+          unless success
+            puts "Trying #{project}-#{services.first}-1"
+            system("cd #{neptuno_path} && docker logs -f #{project}-#{services.first}-1") if options.fetch(:log)
+          end
         end
       end
     end

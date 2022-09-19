@@ -13,7 +13,6 @@ module Neptuno
       argument :services, type: :array, required: false, desc: 'Optional list of services'
 
       def call(services: [], **options)
-        dd = config.fetch('docker_delimiter') || '-'
         multi_spinner = ::TTY::Spinner::Multi.new('[:spinner] Services')
         spinners = {}
         count = 0
@@ -29,7 +28,7 @@ module Neptuno
             ps = `cd #{neptuno_path} && docker compose ps`.split("\n").compact.select { |x| x.match(/^\s*#{project}/) }
 
             running_services.sort.each do |service|
-              service_ps = ps.find { |s| s.include?(project.to_s) && s.include?("#{dd}#{service}#{dd}") }
+              service_ps = ps.find {|s| s =~ /#{project}[-_]#{service}[-_]\d\s/ }
 
               status = :dead if service_ps.to_s.include?('exited')
               status = :starting if service_ps.to_s.include?('starting')
