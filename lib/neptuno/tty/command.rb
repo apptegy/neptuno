@@ -19,6 +19,10 @@ module Neptuno
       def neptuno_command(command)
         `cd #{neptuno_path} && #{command}`
       end
+
+      def docker_compose
+        @docker_compose ||= Neptuno::Docker::Compose.new.command
+      end
     end
   end
 end
