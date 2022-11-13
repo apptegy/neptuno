@@ -20,6 +20,7 @@ module Neptuno
         install 'tmux'
         install 'overmind'
         install 'tmuxinator'
+        install_docker_compose
       end
 
       def install(package)
@@ -28,6 +29,17 @@ module Neptuno
         else
           puts "Installing #{package}"
           system("brew install #{package}")
+        end
+      end
+
+      private
+
+      def install_docker_compose
+        if Neptuno::Docker::Compose.installed?
+          puts 'docker compose is already installed'
+        else
+          puts 'Installing instruction https://docs.docker.com/compose/install'
+          system('brew install docker-compose-plugin')
         end
       end
     end
