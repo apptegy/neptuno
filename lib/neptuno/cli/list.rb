@@ -24,7 +24,7 @@ module Neptuno
         end.to_h
 
         begin
-          docker_containers = `docker compose ps`.lines[1..]
+          docker_containers = `#{docker_compose} ps`.lines[1..]
           raise if $?.exitstatus != 0
         rescue RuntimeError
           exit

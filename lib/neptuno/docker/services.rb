@@ -7,7 +7,7 @@ module Neptuno
       require 'yaml'
 
       def running_services
-        running_services = `cd ~/.neptuno/projects/#{current_project} && docker compose ps | awk '{ print $3 }' | awk 'NR>1'`
+        running_services = `cd ~/.neptuno/projects/#{current_project} && #{docker_compose} ps | awk '{ print $3 }' | awk 'NR>1'`
         running_services.split("\n").map(&:strip)
       end
 

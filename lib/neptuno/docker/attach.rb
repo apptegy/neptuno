@@ -10,7 +10,7 @@ module Neptuno
 
       def call(**options)
         command_service_to('attach', service_as_args: options[:args].first) do |service, project|
-          system("cd #{neptuno_path} && docker compose up -d #{service}") if options.fetch(:up)
+          system("cd #{neptuno_path} && #{docker_compose} up -d #{service}") if options.fetch(:up)
           success = system("cd #{neptuno_path} && docker attach #{project}_#{service}_1")
           unless success
             puts "Trying #{project}-#{services.first}-1"
