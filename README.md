@@ -33,13 +33,13 @@ Notice that you may have to change the path depending on which Ruby version you 
 
 ### rbenv
 Add this to your ~/.zshrc
-```ruby
+```bash
 alias uno='/Users/$USER/.rvm/gems/ruby-3.0.2/bin/neptuno'
 ```
 
 ### asdf
 Add this to your ~/.zshrc
-```ruby
+```bash
 alias uno='/Users/$USER/.asdf/installs/ruby/3.0.2/bin/neptuno'
 ```
 
@@ -50,6 +50,32 @@ docker_delimiter: "_"
 ```
 The path you need for rbenv and asdf may be different.
 
+## docker-compose\docker compose workaround
+
+Create docker-compole link and add add it to PATH
+with content
+
+```bash
+# /bin/docker-compose
+
+docker compose --compatibility "$@"
+```
+
+```bash
+mkdir -p ~/.local/bin
+cat > ~/.local/bin/docker-compose << EOF
+# /bin/docker-compose
+
+docker compose --compatibility "\$@"
+EOF
+chmod +x ~/.local/bin/docker-compose
+```
+
+Add this to your ~/.zshrc
+
+```bash
+export PATH=$PATH:"$HOME/.local/bin"
+```
 
 ## Development
 
