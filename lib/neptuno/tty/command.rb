@@ -21,7 +21,7 @@ module Neptuno
       end
 
       def docker_compose
-        @docker_compose ||= Neptuno::Docker::Compose.new.command
+        @docker_compose ||= Neptuno::Docker::Compose.new.compose_command
       end
     end
   end

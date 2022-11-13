@@ -12,7 +12,7 @@ describe Neptuno::Overmind::Connect do
       @cli_list_mock = Minitest::Mock.new
       @system_mock = MiniTest::Mock.new
       @compose_mock = MiniTest::Mock.new
-      @compose_mock.expect(:command, 'docker-compose')
+      @compose_mock.expect(:compose_command, 'docker-compose')
     end
 
     it 'call docker compose up' do

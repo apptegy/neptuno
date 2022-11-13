@@ -35,7 +35,7 @@ module Neptuno
       private
 
       def install_docker_compose
-        if Neptuno::Docker::Compose.installed?
+        if Neptuno::Docker::Compose.new.installed?
           puts 'docker compose is already installed'
         else
           puts 'Installing instruction https://docs.docker.com/compose/install'
