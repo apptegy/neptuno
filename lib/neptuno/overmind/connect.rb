@@ -19,7 +19,7 @@ module Neptuno
         spinners = {}
         count = 0
         command_services_to('connect to procs', all: options.fetch(:all), services_as_args: services) do |services|
-          system("cd #{neptuno_path} && docker-compose up -d #{services.join(' ')}") if options.fetch(:up)
+          system("cd #{neptuno_path} && #{docker_compose} up -d #{services.join(' ')}") if options.fetch(:up)
           running_services = ::Neptuno::CLI::List.new.running_services.first.keys
           running_services.sort.each do |service|
             spinners[service] ||= multi_spinner.register("[:spinner] :state #{service}")
@@ -27,7 +27,7 @@ module Neptuno
             spinners[service].auto_spin
           end
           loop do
-            ps = `cd #{neptuno_path} && docker-compose ps`.split("\n").compact.select { |x| x.match(/^\s*#{project}/) }
+            ps = `cd #{neptuno_path} && #{docker_compose} ps`.split("\n").compact.select { |x| x.match(/^\s*#{project}/) }
 
             running_services.sort.each do |service|
               service_ps = ps.find {|s| s =~ /#{project}[-_]#{service}[-_]\d\s/ }
