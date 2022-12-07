@@ -1,0 +1,44 @@
+# ./.tmuxinator.yml
+
+<% if  YAML.load_file('neptuno.yml')["procfile_manager"] == "tmux" %>
+name: <%= @args[0] %>
+root: .
+attach: false
+windows:
+  <% File.read("procfiles/#{args[0]}/Procfile").each_line do |proc| %>
+    <%= "- #{proc}" %>
+  <% end %>
+    - host: cd services/<%= args[0] %> && zsh
+
+<% else %>
+
+name: neptuno
+root: .
+on_project_exit: tmux kill-session -t neptuno
+
+windows:
+  - neptuno:
+      panes:
+        - sleep 2 && vim
+        - neptuno ps
+        - # host shell
+
+  <% @args.each do |service| %>
+  - <%= service %>:
+      root: .
+      pre: cd ./services/<%= service %>
+
+    <% if  YAML.load_file('neptuno.yml')["mode"] == "ide" %>
+      layout: 3595,323x99,0,0[323x82,0,0,85,323x16,0,83{161x16,0,83,86,161x16,162,83,87}]
+      panes:
+        - sleep 2 && vim
+        - server: 
+            neptuno c <%= service %>
+    <% else %>
+      panes:
+        - server: 
+            neptuno c <%= service %>
+    <% end %>
+  <% end %>
+
+<% end %>

@@ -41,7 +41,7 @@ module Neptuno
               case status
               when :force
                 spinners[service].success
-                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&`
+                `cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N #{auto_restart_procs.unshift("-r").join(" ") if auto_restart_procs.to_a.count > 0}  > /dev/null 2>&`
               when :dead
                 spinners[service].update(state: 'dead       ')
                 spinners[service].error
@@ -77,7 +77,7 @@ module Neptuno
             end
           else
             spinners.select { |_k, v| v.instance_variable_get(:@succeeded) == :success }.each_key do |service|
-              system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1")
+              system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  #{auto_restart_procs.unshift("-r").join(" ") if auto_restart_procs.to_a.count > 0} > /dev/null 2>&1")
             end
             sleep(5)
             spinner.stop
@@ -89,7 +89,7 @@ module Neptuno
               rescue RuntimeError
                 system("cd #{neptuno_path} && docker compose exec #{service} kill -9 -1")
                 system("cd #{neptuno_path}/procfiles/#{service} && rm .overmind.sock  > /dev/null 2>&1")
-                system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  > /dev/null 2>&1")
+                system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  #{auto_restart_procs.unshift("-r").join(" ") if auto_restart_procs.to_a.count > 0} > /dev/null 2>&1")
                 retry
               end
             end

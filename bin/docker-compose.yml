@@ -1,0 +1,84 @@
+---
+version: '3'
+
+volumes:
+  db_data:
+  redis_data:
+  rails_demo_bundle_cache:
+
+services:
+  ##########################
+  # Reverse Proxy
+  ##########################
+  nginx:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/nginx/Dockerfile
+    ports:
+      - 80:80
+
+  ##########################
+  # Database
+  ##########################
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password 
+
+  ##########################
+  # Message Queue
+  ##########################
+  mq:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+  ##########################
+  # Rails demo
+  ##########################
+  rails_demo:
+    healthcheck:
+      test: "ls ./tmp/ | grep ready.txt"
+    stdin_open: true
+    tty: true
+    command: ash
+    build:
+      context: .
+      dockerfile: ./dockerfiles/rails_demo/Dockerfile
+    volumes:
+      - ~/.ssh:/root/.ssh:ro
+      - ~/.bundle:/root/.bundle
+      - ~/.npmrc:/root/.npmrc:ro
+      - rails_demo_bundle_cache:/bundle:delegated
+      - ./services/rails_demo:/usr/src/app:cached
+    ports:
+      - "3000:80"
+      - "4000:4000"
+    depends_on:
+      - nginx
+      - mq
+      - db
+    command: bash
+
+  ##########################
+  # Selenium
+  ##########################
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  chrome:
+    image: selenium/node-chrome:dev
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - JAVA_OPTS=-Dwebdriver.chrome.whitelistedIps=

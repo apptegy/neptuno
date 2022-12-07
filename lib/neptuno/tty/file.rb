@@ -35,6 +35,14 @@ module Neptuno
           pwd = pwd.split('/')[0..-2].join('/')
         end
       end
+
+      def make_service_files(services)
+        services.each do |service|
+          `cd #{neptuno_path} && mkdir -p environments/#{service} procfiles/#{service} dockerfiles/#{service}`
+          `cd #{neptuno_path} && touch environments/#{service}/local_env`
+          `cd #{neptuno_path} && touch dockerfiles/#{service}/Dockerfile`
+        end
+      end
     end
   end
 end
