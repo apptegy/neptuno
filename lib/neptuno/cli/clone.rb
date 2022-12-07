@@ -10,7 +10,7 @@ module Neptuno
         git_url = options[:args].first
         args_path = options[:args].second
         path = args_path || git_url.split('/').last.split('.').first
-        `git clone --recurse-submodules #{git_url}`
+        `git clone --recurse-submodules #{git_url} #{path}`
         `cd #{path}`
         `cd #{path} && neptuno services update -am`
         puts "Building Docker images"
