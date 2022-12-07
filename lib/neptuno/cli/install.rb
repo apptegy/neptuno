@@ -20,6 +20,10 @@ module Neptuno
         install 'tmux'
         install 'overmind'
         install 'tmuxinator'
+
+        if(system("apt-get -v"))
+          system("sudo apt-get update")
+        end
       end
 
       def install(package)
@@ -27,7 +31,15 @@ module Neptuno
           puts "#{package} is already installed"
         else
           puts "Installing #{package}"
-          system("brew install #{package}")
+          if(system("brew -v"))
+            system("brew install #{package}")
+          else
+            if(package == 'overmind')
+              system("go install github.com/DarthSim/overmind/v2@latest")
+            else
+              system("sudo apt-get install #{package} -y")
+            end
+          end
         end
       end
     end
