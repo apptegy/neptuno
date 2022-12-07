@@ -36,6 +36,8 @@ module Neptuno
           else
             if(package == 'overmind')
               system("go install github.com/DarthSim/overmind/v2@latest")
+            elsif(package == 'tmuxinator')
+              system("gem install tmuxinator")
             else
               system("sudo apt-get install #{package} -y")
             end
