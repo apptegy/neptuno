@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "A CLI for Neptuno distributed architectural style applications"
   spec.homepage = 'https://github.com/apptegy/neptuno'
   spec.license = 'Apache-2.0'
-  spec.required_ruby_version = '>= 2.0'
+  spec.required_ruby_version = '>= 2.3.0'
 
   # spec.metadata['allowed_push_host'] = "TODO: Set to 'https://mygemserver.com'"
 
