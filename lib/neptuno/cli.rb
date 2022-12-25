@@ -13,7 +13,7 @@ module Neptuno
     register 'ls', List, aliases: ['ps']
     register 'activate', Activate, aliases: ['a']
     register 'config', Configure, aliases: %w[configure conf cc]
-    register 'execute', Execute, aliases: ['e']
+    register 'execute', Execute, aliases: ['e', 'exec']
     register 'build', ::Neptuno::Docker::Build, aliases: ['b']
     register 'up', Docker::Up, aliases: ['u']
     register 'down', Docker::Down, aliases: ['d']
