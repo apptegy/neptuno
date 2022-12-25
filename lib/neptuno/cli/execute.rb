@@ -10,7 +10,6 @@ module Neptuno
       desc 'Execute command inside container'
 
       def call(**options)
-        puts options[:args].to_s
         # Some terrible non rubyist code to get the command and the service to execute
         service_to ||= options[:args].length() > 1 ? options[:args].first : nil;
         command ||= options[:args].length() > 1 ? options[:args].last : options[:args].first; # is there a way to get rest of array instead of using .last?
