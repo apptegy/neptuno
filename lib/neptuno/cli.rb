@@ -10,6 +10,7 @@ module Neptuno
 
     register 'version', Version, aliases: ['v', '-v', '--version', 'info']
     register 'init', Init
+    register 'clone', Clone
     register 'ls', List, aliases: ['ps']
     register 'activate', Activate, aliases: ['a']
     register 'config', Configure, aliases: %w[configure conf cc]

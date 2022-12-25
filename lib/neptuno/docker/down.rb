@@ -12,6 +12,7 @@ module Neptuno
 
       def call(services: [], **options)
         command_services_to('go down', all: options.fetch(:all), services_as_args: services) do |services|
+          make_service_files(services)
           system("cd #{neptuno_path} && docker compose stop -t 0 #{services.join(' ')}")
           system("cd #{neptuno_path} && docker compose rm -f #{services.join(' ')}")
           system("cd #{neptuno_path} && tmux kill-session -t neptuno") if options.fetch(:tmux)

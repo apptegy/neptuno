@@ -1,0 +1,14 @@
+---
+mode: ide
+procfile_manager: overmind
+auto_restart_procs:
+  - web
+  - webpacker
+configured_services: ''
+services:
+- rails_demo
+- db
+- mq
+- nginx
+- selenium-hub
+- chrome

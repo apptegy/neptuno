@@ -11,6 +11,7 @@ module Neptuno
 
       def call(services: [], **options)
         command_services_to('build', all: options.fetch(:all), services_as_args: services) do |services|
+          make_service_files(services)
           system("cd #{neptuno_path} && docker compose build #{services.join(' ')}")
         end
       end

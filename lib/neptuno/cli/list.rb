@@ -61,6 +61,9 @@ module Neptuno
         branches = service_current_branches
         dates = last_commit_date
 
+        x = docker_compose_services - neptuno_procs.select{|k,v| v.length > 0}.keys
+        x.each{|y| neptuno_procs[y] = ""}
+
         procs = neptuno_procs.map do |name, *processes|
           display_date = get_display_date(dates[name], options.fetch(:relative))
           state = docker_procs[name]&.match?(/running/) ? 'on' : nil
