@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (1.2.0)
+    neptuno (1.2.1)
       dotiw
       dry-cli
       hirb

@@ -6,9 +6,9 @@ module Neptuno
     module Config
       include TTY::File
       TTY = ::TTY::Config.new
-      TTY.filename = "neptuno"
+      TTY.filename = 'neptuno'
 
-      ABORT_MESSAGE = "fatal: there are no registered services. Add one with: neptuno services add"
+      ABORT_MESSAGE = 'fatal: there are no registered services. Add one with: neptuno services add'
 
       def config
         TTY
@@ -25,11 +25,11 @@ module Neptuno
       end
 
       def docker_compose_services
-        docker_compose_hash.fetch("services").keys.sort
+        docker_compose_hash.fetch('services').keys.sort
       end
 
       def auto_restart_procs
-        config.fetch("auto_restart_procs")
+        config.fetch('auto_restart_procs')
       end
 
       def services
@@ -39,16 +39,16 @@ module Neptuno
       end
 
       def configured_services
-        config.fetch("configured_services")
+        config.fetch('configured_services')
       end
 
       def running_services
-        `cd #{neptuno_path} && docker-compose ps --status running --services`.split
+        `cd #{neptuno_path} && docker compose ps --status running --services`.split
       end
 
       def json_services_status
         JSON.parse(`cd #{neptuno_path} && docker compose ps --all --format json`).map do |service|
-          [service.dig("Service"), service.dig("Status")]
+          [service.dig('Service'), service.dig('Status')]
         end
       end
 
@@ -63,13 +63,13 @@ module Neptuno
       end
 
       def services_with_procs
-        `cd #{neptuno_path} && find procfiles -type f -size +0`.split.map { |x| x.split("/")[1] }
+        `cd #{neptuno_path} && find procfiles -type f -size +0`.split.map { |x| x.split('/')[1] }
       end
 
       def get_dependants(services = [])
         return [] if services.empty?
 
-        deps = services.map { |service| docker_compose_hash.dig("services", service, "depends_on") }.flatten.uniq
+        deps = services.map { |service| docker_compose_hash.dig('services', service, 'depends_on') }.flatten.uniq
         [deps, get_dependants(deps - services)].flatten.compact.uniq
       end
     end
