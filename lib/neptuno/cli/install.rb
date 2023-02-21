@@ -10,20 +10,20 @@ module Neptuno
       include TTY::Config
       include TTY::Which
 
-      desc 'Installs git, docker, tmux, tmuxinator and overmind'
+      desc "Installs git, docker, tmux, tmuxinator and overmind"
 
       CONFIG = nil
 
       def call(**)
-        install 'git'
-        install 'docker'
-        install 'tmux'
-        install 'overmind'
-        install 'tmuxinator'
+        install "git"
+        install "docker"
+        install "tmux"
+        install "overmind"
+        install "tmuxinator"
 
-        if(system("apt-get -v"))
-          system("sudo apt-get update")
-        end
+        return unless system("apt-get -v")
+
+        system("sudo apt-get update")
       end
 
       def install(package)
@@ -31,16 +31,14 @@ module Neptuno
           puts "#{package} is already installed"
         else
           puts "Installing #{package}"
-          if(system("brew -v"))
+          if system("brew -v")
             system("brew install #{package}")
+          elsif package == "overmind"
+            system("go install github.com/DarthSim/overmind/v2@latest")
+          elsif package == "tmuxinator"
+            system("gem install tmuxinator")
           else
-            if(package == 'overmind')
-              system("go install github.com/DarthSim/overmind/v2@latest")
-            elsif(package == 'tmuxinator')
-              system("gem install tmuxinator")
-            else
-              system("sudo apt-get install #{package} -y")
-            end
+            system("sudo apt-get install #{package} -y")
           end
         end
       end

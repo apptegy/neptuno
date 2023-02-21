@@ -4,7 +4,7 @@ module Neptuno
   module Environment
     # Build docker container for Neptuno project
     class Update < Neptuno::CLI::Base
-      desc 'Environment: Update all environment files'
+      desc "Environment: Update all environment files"
 
       def call
         env_path = "#{neptuno_path}/environments/"

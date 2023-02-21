@@ -1,4 +1,5 @@
-# ./.tmuxinator.yml
+# This file defines what Tmux will do when Neptuno connects to your services. 
+# You can add or remove Tmux windows and panes for each service here.
 
 <% if  YAML.load_file('neptuno.yml')["procfile_manager"] == "tmux" %>
 name: <%= @args[0] %>
@@ -19,9 +20,7 @@ on_project_exit: tmux kill-session -t neptuno
 windows:
   - neptuno:
       panes:
-        - sleep 2 && vim
         - neptuno ps
-        - # host shell
 
   <% @args.each do |service| %>
   - <%= service %>:
@@ -40,5 +39,4 @@ windows:
             neptuno c <%= service %>
     <% end %>
   <% end %>
-
 <% end %>

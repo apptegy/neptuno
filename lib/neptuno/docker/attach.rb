@@ -6,10 +6,10 @@ module Neptuno
       include ::Neptuno::TTY::Config
       desc "Docker: Attach to a container's command"
 
-      option :up, type: :boolean, default: false, desc: 'Try to start containers before connecting'
+      option :up, type: :boolean, default: false, desc: "Try to start containers before connecting"
 
       def call(**options)
-        command_service_to('attach', service_as_args: options[:args].first) do |service, project|
+        command_service_to("attach", service_as_args: options[:args].first) do |service, project|
           system("cd #{neptuno_path} && docker compose up -d #{service}") if options.fetch(:up)
           success = system("cd #{neptuno_path} && docker attach #{project}_#{service}_1")
           unless success

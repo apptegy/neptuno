@@ -7,7 +7,7 @@ module Neptuno
       desc "Docker: Show a container's log"
 
       def call(**options)
-        command_service_to('log', service_as_args: options[:args].first) do |service, project|
+        command_service_to("log", service_as_args: options[:args].first) do |service, project|
           success = system("cd #{neptuno_path} && docker logs -f #{project}_#{service}_1")
           unless success
             puts "Trying #{project}-#{services.first}-1"

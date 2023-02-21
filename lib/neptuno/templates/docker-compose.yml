@@ -1,7 +1,18 @@
-version: '3'
-services:
-  alpine:
-    image: alpine
-    tty: true
-    stdin_open: true
-    command: ash
+# This file should contain all your project's services with references to their dockerfiles, env_files, volumes, etc.
+# You can then connect to your services using `neptuno connect <service1 service2 ...>`
+#
+# Example:
+#
+#   version: '3'
+#
+#     services:
+#       alpine:
+#         tty: true
+#         stdin_open: true
+#         build:
+#           context: .
+#           dockerfile: ./dockerfiles/alpine/Dockerfile
+#         env_file:
+#           - ./environments/alpine/local_env
+#         volumes:
+#           - ./services/alpine:/usr/src/app:cached

@@ -1,0 +1,6 @@
+---
+# mode: ide
+# procfile_manager = ["overmind" | "tmux"] # overmind is the default
+configured_services: ''
+services: []
+auto_restart_procs: []

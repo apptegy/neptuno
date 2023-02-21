@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neptuno (1.0.10)
+    neptuno (1.2.0)
       dotiw
       dry-cli
       hirb
@@ -17,7 +17,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.4)
+    activesupport (7.0.4.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -25,7 +25,7 @@ GEM
     ansi (1.5.0)
     ast (2.4.2)
     builder (3.2.4)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.0)
     diff-lcs (1.5.0)
     dotiw (5.3.3)
       activesupport
@@ -90,14 +90,15 @@ GEM
     tty-spinner (0.9.3)
       tty-cursor (~> 0.7)
     tty-which (0.5.0)
-    tzinfo (2.0.5)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
     wisper (2.0.1)
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   x86_64-darwin-21
+  x86_64-darwin-22
   x86_64-linux
 
 DEPENDENCIES

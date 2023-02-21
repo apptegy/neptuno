@@ -5,13 +5,19 @@ module Neptuno
     # Init Neptuno files
 
     class Clone < Dry::CLI::Command
-      desc 'Clone a neptuno compliant project'
+      desc "Clone a neptuno compliant project"
+      option :provision, type: :boolean, default: false, desc: "Build docker images, start containers and run procs"
+
       def call(**options)
         git_url = options[:args].first
         args_path = options[:args].second
-        path = args_path || git_url.split('/').last.split('.').first
+        path = args_path || git_url.split("/").last.split(".").first
         `git clone --recurse-submodules #{git_url} #{path}`
+
         sleep(1)
+
+        return unless options.fetch(:provision)
+
         `cd #{path} && neptuno services update -am`
         puts "Building Docker images"
         `cd #{path} && neptuno build -a`

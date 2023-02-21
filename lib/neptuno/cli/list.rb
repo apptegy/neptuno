@@ -9,29 +9,24 @@ module Neptuno
       include TTY::Config
       include DOTIW::Methods
 
-      desc 'List containers and their processes'
-      option :relative, aliases: ['r'], type: :boolean, default: true,
-                        desc: "Use relative time in 'last commit date' field"
+      desc "List containers and their processes"
+      option :relative, aliases: ["r"], type: :boolean, default: true,
+        desc: "Use relative time in 'last commit date' field"
 
       STATE_ORDER = %w[on dead off].freeze
 
-      def running_services
-        proc_files = Dir.glob('procfiles/**/Procfile', base: neptuno_path)
-        neptuno_procs = proc_files.map do |f|
-          [f.split("\/")[1], File.read("#{neptuno_path}/#{f}").split("\n").map do |s|
-                               s.split(':').first
-                             end]
+      def services_and_procs
+        proc_files = Dir.glob("procfiles/**/Procfile", base: neptuno_path)
+        sap = proc_files.map do |f|
+          [f.split("/")[1], File.read("#{neptuno_path}/#{f}").split("\n").map do |s|
+            next if /^\w*#/.match?(s)
+
+            s.split(":").first
+          end.compact]
         end.to_h
 
-        begin
-          docker_containers = `docker compose ps`.lines[1..]
-          raise if $?.exitstatus != 0
-        rescue RuntimeError
-          exit
-        end
-        docker_procs = docker_containers.map { |service| service.split(/\s\s+/).slice(2, 2) }.to_h
-
-        [neptuno_procs, docker_procs]
+        services.each { |s| sap[s] ||= [] }
+        sap
       end
 
       def service_current_branches
@@ -49,30 +44,25 @@ module Neptuno
       end
 
       def get_display_date(date, relative)
-        if date
-          return date unless relative
+        return unless date
+        return date unless relative
 
-          distance_of_time_in_words(Time.now, Time.parse(date), false, highest_measures: 1).concat(' ago')
-        end
+        distance_of_time_in_words(Time.now, Time.parse(date), false, highest_measures: 1).concat(" ago")
       end
 
       def call(**options)
-        neptuno_procs, docker_procs = running_services
+        jss = json_services_status.to_h
         branches = service_current_branches
         dates = last_commit_date
 
-        x = docker_compose_services - neptuno_procs.select{|k,v| v.length > 0}.keys
-        x.each{|y| neptuno_procs[y] = ""}
-
-        procs = neptuno_procs.map do |name, *processes|
+        procs = services_and_procs.map do |name, *processes|
           display_date = get_display_date(dates[name], options.fetch(:relative))
-          state = docker_procs[name]&.match?(/running/) ? 'on' : nil
-          state ||= docker_procs[name]&.match?(/exited/) ? 'dead' : 'off'
-          { state: state, name: name, branch: branches[name], last_commit: display_date, processes: processes }
+          state = jss.to_h[name] || "Off"
+          {state: state, name: name, branch: branches[name], last_commit: display_date, processes: processes}
         end
 
         puts Hirb::Helpers::AutoTable.render(procs.sort do |a, b|
-                                               [STATE_ORDER.index(b[:state]), a[:name]] <=> [STATE_ORDER.index(a[:state]), b[:name]]
+                                               a[:state].split(" ").first <=> b[:state].split(" ").first
                                              end.reverse, fields: %i[state name branch last_commit processes])
       end
     end
