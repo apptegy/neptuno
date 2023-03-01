@@ -8,19 +8,19 @@ module Neptuno
       include TTY::Config
       include TTY::Which
 
-      desc "Initializes a Neptuno project folder structure"
+      desc 'Initializes a Neptuno project folder structure'
 
-      WORK_TREE = {"." => [{"services" => [], "dockerfiles" => [], "procfiles" => [], "environments" => []}]}.freeze
+      WORK_TREE = { '.' => [{ 'services' => [], 'dockerfiles' => [], 'procfiles' => [], 'environments' => [] }] }.freeze
 
       CONFIG = nil
 
       def call(**)
-        abort "Neptuno projects can not be nested." if neptuno_path != ""
+        abort 'Neptuno projects can not be nested.' if neptuno_path != ''
         ::TTY::File.create_dir(WORK_TREE, Dir.pwd)
-        config.set(:configured_services, value: "")
+        config.set(:configured_services, value: '')
         config.set(:services, value: [])
         config.write(create: true, force: true)
-        `cp -r #{File.expand_path("../../templates", __dir__)}/* ./`
+        `cp -r #{File.expand_path('../templates', __dir__)}/* ./`
       end
     end
   end
