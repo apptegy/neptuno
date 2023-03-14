@@ -25,7 +25,7 @@ module Neptuno
           if config.fetch('procfile_manager') == 'tmux'
             services.each do |service|
               if /#{service}/.match?(`tmux ls`)
-                puts "Neptuno wil use existing Tmux session for: #{service}"
+                puts "Neptuno will use the existing Tmux session for: #{service}"
                 next
               end
 
