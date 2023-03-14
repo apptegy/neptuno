@@ -12,7 +12,7 @@ module Neptuno
       def call(services: [],**options)
         command_service_to('execute', service_as_args: services) do |service, _project|
           puts "Executing #{options[:args][-1]} inside of #{service} container"
-          system("cd #{neptuno_path} && docker compose exec #{service} ash -c \"#{options[:args][-1]}\"")
+          system("cd #{neptuno_path} && docker compose exec #{service} $0 -c \"#{options[:args][-1]}\"")
           # TODO: Add support for referencing procs as executable commands with exec
         end
       end
