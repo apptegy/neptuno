@@ -14,8 +14,8 @@ module Neptuno
           command = options[:args][-1]
           # Creates a hash of processes from Procfile
           procHash = File.foreach("#{neptuno_path}/procfiles/#{service}/Procfile").with_object({}) do |line, hash|
-            name, command = line.strip.split(':', 2)
-            hash[name] = command
+            name, process = line.strip.split(':', 2)
+            hash[name] = process
           end
           if procHash.has_key?(command)
             puts "Found #{command} in procfile, executing #{command}"
