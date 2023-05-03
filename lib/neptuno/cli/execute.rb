@@ -11,9 +11,23 @@ module Neptuno
 
       def call(services: [],**options)
         command_service_to('execute', service_as_args: services) do |service, _project|
-          puts "Executing #{options[:args][-1]} inside of #{service} container"
-          system("cd #{neptuno_path} && docker compose exec #{service} $0 -c \"#{options[:args][-1]}\"")
+          command = options[:args][-1]
           # TODO: Add support for referencing procs as executable commands with exec
+          # Creates a hash of processes from Procfile
+          procfile = File.read("#{neptuno_path}/procfiles/#{service}/Procfile")
+          procHash = {}
+          procfile.each_line do |line|
+            if line =~ /^([A-Za-z0-9_]+):\s*(.*)$/
+              procHash[$1] = $2
+            end
+          end
+          if procHash.has_key?(command)
+            puts "Executing #{command} from procfile inside of #{service} container"
+            system("cd #{neptuno_path} && #{procHash[command]}")
+          else
+            puts "Executing #{command} inside of #{service} container"
+            system("cd #{neptuno_path} && docker compose exec #{service} $0 -c \"#{command}\"")
+          end
         end
       end
     end
