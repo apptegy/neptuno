@@ -1,0 +1,11 @@
+name: Ruby Gem
+
+on:
+  push:
+    branches:
+      - "main"
+      - "main-0.2.x"
+jobs:
+  publish:
+    uses: apptegy/neptuno/.github/workflows/publish.yml@main
+

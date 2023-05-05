@@ -1,0 +1,35 @@
+on:
+  workflow_call:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby:
+          - 3.2.2
+          - 3.1.4
+          - 3.0.6
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - name: Install dependencies
+        run: bundle install
+      - name: Run tests
+        run: bundle exec rake
+      - name: Build
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:github: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+          gem build *.gemspec
+        env:
+          GEM_HOST_API_KEY: "Bearer ${{ secrets.GITHUB_TOKEN }}"
+      - name: Publish
+        run: |
+          gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} *.gem
+        env:
+          OWNER: ${{ github.repository_owner }}
