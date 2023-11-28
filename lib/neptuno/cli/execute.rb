@@ -6,19 +6,24 @@ module Neptuno
     class Execute < Neptuno::CLI::Base
       include TTY::File
       include TTY::Config
+      
+      desc "Execute command inside of container"
 
-      desc "Execute service script"
-
-      def call(**options)
-        command_service_to("execute", service_as_args: options[:args]&.first) do |service, _project|
-          commands = Dir.glob("#{neptuno_path}/scripts/#{service}/*").map { |x| x.split("/") }.map(&:last)
-          command = options[:args].last if commands.include?(options[:args]&.last)
-          puts "#{neptuno_path}/scripts/#{service}/*"
-          puts service
-          puts commands.to_s
-          puts Dir.glob("#{neptuno_path}/scripts/#{service}/*").to_s
-          command ||= prompt.select("execute", commands || [])
-          `cd #{neptuno_path}/scripts/#{service} && ./#{command}`
+      def call(services: [],**options)
+        command_service_to('execute', service_as_args: services) do |service, _project|
+          command = options[:args][-1]
+          # Creates a hash of processes from Procfile
+          procHash = File.foreach("#{neptuno_path}/procfiles/#{service}/Procfile").with_object({}) do |line, hash|
+            name, process = line.strip.split(':', 2)
+            hash[name] = process
+          end
+          if procHash.has_key?(command)
+            puts "Found #{command} in procfile, executing #{command}"
+            system("cd #{neptuno_path} && #{procHash[command]}")
+          else
+            puts "Executing #{command} inside of #{service} container"
+            system("cd #{neptuno_path} && docker compose exec #{service} $0 -c \"#{command}\"")
+          end
         end
       end
     end
