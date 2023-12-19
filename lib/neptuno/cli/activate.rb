@@ -17,7 +17,7 @@ module Neptuno
         count = 0
         command_services_to("activate to services", all: options.fetch(:all), services_as_args: services) do |services|
           system("cd #{neptuno_path} && docker compose up -d #{services.join(" ")}")
-          running_services = ::Neptuno::CLI::List.new.running_services.first.keys
+          running_services = ::Neptuno::CLI::List.new.running_services # array of services (string)
           running_services.sort.each do |service|
             spinners[service] ||= multi_spinner.register("[:spinner] :state #{service}")
             spinners[service].update(state: "-          ")
@@ -28,7 +28,7 @@ module Neptuno
 
             running_services.sort.each do |service|
               service_ps = ps.find { |s| s =~ /#{project}[-_]#{service}[-_]\d\s/ }
-
+              status = nil
               status = :dead if service_ps.to_s.include?("exited")
               status = :starting if service_ps.to_s.include?("starting")
               status = :unhealthy if service_ps.to_s.include?("(unhealthy")
