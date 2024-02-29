@@ -9,6 +9,7 @@ module Neptuno
 
       option :all, type: :boolean, default: false, desc: "Run on all services"
       option :up, type: :boolean, default: true, desc: "Try to start containers before connecting"
+      option :inline, type: :boolean, default: false, desc: 'Start processes inline'
       argument :services, type: :array, required: false, desc: "Optional list of services"
 
       def call(services: [], **options)
@@ -27,9 +28,11 @@ module Neptuno
             end
           else
             services.each do |service|
-              system("cd #{neptuno_path}/procfiles/#{service} && overmind start -D -N  #{if auto_restart_procs.to_a.size > 0
+              inline = options.fetch(:inline) ? "" : "-D"  
+              output = options.fetch(:inline) ? "" : "> /dev/null 2>&1"  
+              system("cd #{neptuno_path}/procfiles/#{service} && overmind start #{inline} -N  #{if auto_restart_procs.to_a.size > 0
                                                                                            ("-r " + auto_restart_procs.join(",") + " ")
-                                                                                         end} > /dev/null 2>&1")
+                                                                                         end} #{output}")
             end
           end
         end

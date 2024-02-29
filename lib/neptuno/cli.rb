@@ -35,5 +35,6 @@ module Neptuno
     register "install", ::Neptuno::CLI::Install
     register "environment update", Environment::Update
     register "environment config", Environment::Config
+    register "jump", Jump, aliases: ['j']
   end
 end

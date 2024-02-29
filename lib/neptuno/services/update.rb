@@ -15,8 +15,10 @@ module Neptuno
         command_services_to('update', all: options.fetch(:all), services_as_args: services) do |services|
           services.each do |service|
             puts "---Updating #{service}---"
-            current_branch = `git branch --show-current`
-            puts current_branch
+            if `ls -hal #{neptuno_path}/services/#{service} 2>/dev/null | grep .git`.empty?
+              next if !initialize_submodule(service) 
+            end
+            current_branch = `cd #{neptuno_path}/services/#{service}  2>/dev/null && git branch --show-current`
             system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git add . && git stash save -u -q neptuno_stash")
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout main 2>/dev/null`
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout master 2>/dev/null`
@@ -32,6 +34,21 @@ module Neptuno
             puts ''
           end
         end
+      end
+
+      def initialize_submodule(service)
+        puts "Initializing submodule for #{service}"
+        if `git submodule | grep #{service} 2>/dev/null`.empty?
+          puts ("Skipping  #{service}, it is not a git submodule.") 
+          puts ""
+          return false 
+        end
+        # TODO abort if the current user doesn't have access to the remote submodule repo
+
+        `cd #{neptuno_path}/services/#{service} && git submodule update --init --recursive`
+        `cd #{neptuno_path}/services/#{service} && git checkout master 2>/dev/null`
+        `cd #{neptuno_path}/services/#{service} && git checkout main 2>/dev/null`
+        return true
       end
     end
   end

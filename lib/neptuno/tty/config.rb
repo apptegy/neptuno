@@ -47,7 +47,8 @@ module Neptuno
       end
 
       def json_services_status
-        JSON.parse(`cd #{neptuno_path} && docker compose ps --all --format json`).map do |service|
+        `cd #{neptuno_path} && docker compose ps --all --format json`.lines.map do |line|
+          service = JSON.parse(line)
           [service.dig('Service'), service.dig('Status')]
         end
       end
