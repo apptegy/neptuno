@@ -7,6 +7,7 @@ module Neptuno
       desc 'Docker: Stop docker containers for current project'
 
       option :all, type: :boolean, default: false, desc: 'Run on all services'
+      option :volumes, type: :boolean, default: false, desc: 'Remove named volumes'
       argument :services, type: :array, required: false, desc: 'Optional list of services'
 
       def call(services: [], **options)
@@ -15,6 +16,7 @@ module Neptuno
           services_to_stop = services.intersection(services_with_procs).intersection(running_services)
           system("cd #{neptuno_path} && docker compose stop -t 0 #{services.join(' ')}")
           system("cd #{neptuno_path} && docker compose rm -f #{services.join(' ')}")
+          system("cd #{neptuno_path} && docker compose down -v #{services.join(' ')}") if options.fetch(:volumes)
           if config.fetch('procfile_manager') == 'tmux'
             services_to_stop.each do |service|
               system("tmux kill-session -t #{service} 2>/dev/null ")
