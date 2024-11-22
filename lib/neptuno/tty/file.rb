@@ -39,7 +39,7 @@ module Neptuno
       def make_service_files(services)
         services.each do |service|
           `cd #{neptuno_path} && mkdir -p environments/#{service} procfiles/#{service} dockerfiles/#{service}`
-          `cd #{neptuno_path} && touch environments/#{service}/local_env`
+          `cd #{neptuno_path} && touch environments/#{service}/default`
           `cd #{neptuno_path} && touch dockerfiles/#{service}/Dockerfile`
           `cd #{neptuno_path} && touch dockerfiles/#{service}/entrypoint.sh`
         end

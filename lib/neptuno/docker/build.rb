@@ -13,6 +13,11 @@ module Neptuno
       def call(services: [], **options)
         command_services_to('build', all: options.fetch(:all), services_as_args: services) do |services|
           make_service_files(services)
+          populated = system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git add .")
+          unless populated
+            puts 'Initializing git submodule'
+            system("cd #{neptuno_path}/services/#{service} 2>/dev/null && git submodule update --init --recursive #{neptuno_path}/services/#{service}")
+          end
           opts = options.fetch(:options, nil) || get_gpr
           services.each do |service|
             puts '********************'

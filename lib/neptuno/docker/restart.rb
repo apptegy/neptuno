@@ -7,6 +7,7 @@ module Neptuno
       desc 'Docker: Rebuild and restart docker containers for current project'
 
       option :all, type: :boolean, default: false, desc: 'Run on all services'
+      option :volumes, type: :boolean, default: false, desc: 'Remove named volumes'
       argument :services, type: :array, required: false, desc: 'Optional list of services'
       option :options, required: false, desc: 'Optional string of options passed to build'
 
@@ -15,6 +16,7 @@ module Neptuno
           make_service_files(services)
           opts = options.fetch(:options, nil) || get_gpr
           system("cd #{neptuno_path} && docker compose stop -t 0 #{services.join(' ')}")
+          system("cd #{neptuno_path} && docker compose down -v #{services.join(' ')}") if options.fetch(:volumes)
           system("cd #{neptuno_path} && docker compose rm -f #{services.join(' ')}")
           system("cd #{neptuno_path} && docker compose build #{opts} #{services.join(' ')}")
           system("cd #{neptuno_path} && docker compose up -d #{services.join(' ')}")

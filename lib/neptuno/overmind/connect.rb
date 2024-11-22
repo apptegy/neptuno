@@ -37,10 +37,10 @@ module Neptuno
           else
             puts `neptuno start --no-up #{services.join(' ')}` if options.fetch(:start)
             if outside_tmux
-              system("cd #{neptuno_path} && tmuxinator start neptuno #{services.join(' ')}")
+              system("cd #{neptuno_path} && sleep 1 && tmuxinator start neptuno #{services.join(' ')}")
             else
               puts "Connecting to #{original_services.first}"
-              system("cd #{neptuno_path}/procfiles/#{original_services.first} && overmind connect shell")
+              system("cd #{neptuno_path}/procfiles/#{original_services.first} && sleep 2 && overmind connect shell")
             end
           end
         end

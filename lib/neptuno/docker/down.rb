@@ -23,7 +23,7 @@ module Neptuno
               puts "Neptuno killed Tmux session for: #{service}" if `echo $TMUX`.strip.empty?
             end
           else
-            system("cd #{neptuno_path} && tmux kill-session -t neptuno")
+            # system("cd #{neptuno_path} && tmux kill-session -t neptuno")
             services_to_stop.each do
               system("cd #{neptuno_path}/procfiles/#{service} && rm .overmind.sock  > /dev/null 2>&1")
             end
