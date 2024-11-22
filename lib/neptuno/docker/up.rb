@@ -13,15 +13,6 @@ module Neptuno
       def call(services: [], **options)
         command_services_to('come up', all: options.fetch(:all), services_as_args: services) do |services, _project|
           make_service_files(services)
-
-          services.each do |service|
-            populated = system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git add .")
-            unless populated
-              puts 'Initializing git submodule'
-              system("cd #{neptuno_path}/services/#{service} 2>/dev/null && git submodule update --init --recursive #{neptuno_path}/services/#{service}")
-            end
-          end
-
           system("cd #{neptuno_path} && docker compose up -d --wait #{services.join(' ')}")
         end
       end

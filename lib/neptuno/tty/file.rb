@@ -38,6 +38,15 @@ module Neptuno
 
       def make_service_files(services)
         services.each do |service|
+          `cd #{neptuno_path}/services/#{service}  2>/dev/null`
+          if $?.exitstatus.zero?
+            `cd #{neptuno_path}/services/#{service}  2>/dev/null && git add . 2>/dev/null`
+            unless $?.exitstatus.zero?
+              `cd #{neptuno_path}/services/#{service} 2>/dev/null && git submodule update --init --recursive #{neptuno_path}/services/#{service}`
+              `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout main 2>/dev/null`
+              `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout master 2>/dev/null`
+            end
+          end
           `cd #{neptuno_path} && mkdir -p environments/#{service} procfiles/#{service} dockerfiles/#{service}`
           `cd #{neptuno_path} && touch environments/#{service}/default`
           `cd #{neptuno_path} && touch dockerfiles/#{service}/Dockerfile`

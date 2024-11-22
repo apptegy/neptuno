@@ -16,12 +16,8 @@ module Neptuno
           services.each do |service|
             puts "---Updating #{service}---"
             current_branch = `git branch --show-current`
-            puts "Current branch #{current_branch}\r\n"
-            populated = system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git add . && git stash save -u -q neptuno_stash")
-            unless populated
-              puts 'Initializing git submodule'
-              system("cd #{neptuno_path}/services/#{service} 2>/dev/null && git submodule update --init --recursive #{neptuno_path}/services/#{service}")
-            end
+            puts current_branch
+            system("cd #{neptuno_path}/services/#{service}  2>/dev/null && git add . && git stash save -u -q neptuno_stash")
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout main 2>/dev/null`
             `cd #{neptuno_path}/services/#{service} 2>/dev/null && git checkout master 2>/dev/null`
             system("cd #{neptuno_path}/services/#{service} 2>/dev/null && git pull")

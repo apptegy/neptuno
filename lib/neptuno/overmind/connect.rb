@@ -16,9 +16,9 @@ module Neptuno
 
       def call(services: [], **options)
         command_services_to('connect to procs', all: options.fetch(:all), services_as_args: services) do |services|
-          `neptuno up #{services.join(' ')}` if options.fetch(:up)
           original_services = services
           services = services_with_procs.intersection(get_dependants(services).concat(services).uniq).sort
+          `neptuno up #{services.join(' ')}` if options.fetch(:up)
 
           outside_tmux = `echo $TMUX`.strip.empty?
 
